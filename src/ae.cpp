@@ -1,5 +1,4 @@
 #include "ae.h"
-#include "instance-80formations.h"
 #include <math.h>
 
 using namespace std;

@@ -35,7 +35,8 @@ OBJ= \
 	main.o \
 	ae.o \
 	chromosome.o \
-	population.o
+	population.o \
+	instance-80formations.o
 
 
 

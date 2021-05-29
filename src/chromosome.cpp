@@ -147,8 +147,8 @@ void chromosome::deplacement_1_gene()
 
 	//puis on insert le gene en décalant les genes qui se trouvent entre l'ancienne et la nouvelle position
 	if (pos < i) {
-		debut = pos;
-		fin = i;
+		int debut = pos;
+		int fin = i;
 
 		int geneI = genes[i];
 		int geneD = genes[debut];
@@ -160,8 +160,8 @@ void chromosome::deplacement_1_gene()
 		}
 	}
 	else{
-		debut = i;
-		fin = pos;
+		int debut = i;
+		int fin = pos;
 
 		int geneI = genes[i];
 		for(int j = debut; j < fin; j++){

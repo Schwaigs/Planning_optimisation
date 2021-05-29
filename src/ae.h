@@ -9,37 +9,36 @@
 #include "chromosome.h"
 
 using namespace std;
-// La classe Ae définie les paramètres d'une exécution d'un algorithme
-//    évolutionniste ainsi que la procédure principale de recherche
+// La classe Ae dï¿½finie les paramï¿½tres d'une exï¿½cution d'un algorithme
+//    ï¿½volutionniste ainsi que la procï¿½dure principale de recherche
 class Ae{
 public:
     // ATTRIBUTS
-	int nbgenerations;       // nombre de générations après quoi la recherche est arrétée
+	int nbgenerations;       // nombre de gï¿½nï¿½rations aprï¿½s quoi la recherche est arrï¿½tï¿½e
 	int taille_pop;          // nombre d'individus dans la population
 	double taux_croisement;  // taux de croisement : valeur entre 0 et 1
 	double taux_mutation;    // taux de mutation : valeur entre 0 et 1
-	int taille_chromosome;   // nombre de gènes dans le chromosome
+	int taille_chromosome;   // nombre de gï¿½nes dans le chromosome
 	population *pop;         // liste des individus de la population
-    int **les_distances;     // matrice des distances entre les villes
 
 	// CONSTRUCTEURS
-	Ae(int nbg, int tp, double tcroisement, double tmutation, int tc, char* nom_fichier);
+	Ae(int nbg, int tp, double tcroisement, double tmutation, int tc);
                              // constructeur de l'objet Algaorithme evolutioniste
 	~Ae();                   // destructeur de l'objet Ae
 
 	// METHODES
-	void constuction_distance(char* nom_fichier);
+	void test_acces_donnees_instances();
                              // constuie la matrice des distances
-	chromosome* optimiser(); // fonction principale qui décit le déroulement de l'algorithme évolusionniste
+	chromosome* optimiser(); // fonction principale qui dï¿½cit le dï¿½roulement de l'algorithme ï¿½volusionniste
 
 	// OPERATEURS DE CROISEMENT
-	// opérateur de croisement 1X de deux chromosomes
+	// opï¿½rateur de croisement 1X de deux chromosomes
     void croisement1X(chromosome* parent1, chromosome* parent2,
                       chromosome* enfant1, chromosome* enfant2);
-	// opérateur de croisement 1X de deux chromosomes
+	// opï¿½rateur de croisement 1X de deux chromosomes
     void croisement2X(chromosome* parent1, chromosome* parent2,
                       chromosome* enfant1, chromosome* enfant2);
-	// opérateur de croisement 2LOX de deux chromosomes
+	// opï¿½rateur de croisement 2LOX de deux chromosomes
     void croisement2LOX(chromosome* parent1, chromosome* parent2,
                         chromosome* enfant_s1, chromosome* enfant_s2);
 };

@@ -88,8 +88,8 @@ void population::ordonner()
 			}
 }
 
-// Ré-ordonne le classement des individus de la population par ordre croissant de fitness
-//   après un petit changement
+// Rï¿½-ordonne le classement des individus de la population par ordre croissant de fitness
+//   aprï¿½s un petit changement
 void population::reordonner()
 {
 	int inter;
@@ -104,7 +104,7 @@ void population::reordonner()
 }
 
 // SELECTION PAR ROULETTE BIAISEE
-//opérateur de sélection basé sur la fonction fitness
+//opï¿½rateur de sï¿½lection basï¿½ sur la fonction fitness
 chromosome* population::selection_roulette()
 {
 	int somme_fitness = individus[0]->fitness;
@@ -131,8 +131,8 @@ chromosome* population::selection_roulette()
 	return individus[ind];
 }
 
-// opérateur de remplacement basé sur la roulette biaisée d'un individu de la population
-//   par un nouveau individu donné en argument
+// opï¿½rateur de remplacement basï¿½ sur la roulette biaisï¿½e d'un individu de la population
+//   par un nouveau individu donnï¿½ en argument
 void population::remplacement_roulette(chromosome* individu)
 {
 	int somme_fitness = individus[0]->fitness;
@@ -159,15 +159,15 @@ void population::remplacement_roulette(chromosome* individu)
 }
 
 // SELECTION ALEATOIRE
-//opérateur de sélection aléatoire
+//opï¿½rateur de sï¿½lection alï¿½atoire
 chromosome* population::selection_aleatoire()
 {
 	int ind_alea = Random::aleatoire(taille_pop);
 	return individus[ind_alea];
 }
 
-// opérateur de remplacement alétoire d'un individu de la population
-//   par un nouveau individu donné en argument
+// opï¿½rateur de remplacement alï¿½toire d'un individu de la population
+//   par un nouveau individu donnï¿½ en argument
 void population::remplacement_aleatoire(chromosome* individu)
 {
 	int ind_alea = Random::aleatoire(taille_pop);
@@ -176,9 +176,9 @@ void population::remplacement_aleatoire(chromosome* individu)
 }
 
 // SELECTION PAR RANKING
-// opérateur de sélection basé sur le ranking, les individus de la
-//   population sont ordonnés de façon à ce que le meilleur est le rang 0
-//   le taux de ranking permet de régler la préssion de sélection :
+// opï¿½rateur de sï¿½lection basï¿½ sur le ranking, les individus de la
+//   population sont ordonnï¿½s de faï¿½on ï¿½ ce que le meilleur est le rang 0
+//   le taux de ranking permet de rï¿½gler la prï¿½ssion de sï¿½lection :
 //   0 forte pression et +INFINI faible pression (probabilite = 1/nb qlq soit l'individu)
 chromosome* population::selection_ranking(float taux_ranking)
 {
@@ -202,8 +202,8 @@ chromosome* population::selection_ranking(float taux_ranking)
 	return individus[ordre[i]];
 }
 
-// opérateur de remplacement basé sur le ranking d'un individu de la population
-//   par un nouveau individu donné en argument
+// opï¿½rateur de remplacement basï¿½ sur le ranking d'un individu de la population
+//   par un nouveau individu donnï¿½ en argument
 void population::remplacement_ranking(chromosome*individu, float taux_ranking)
 {
 	double variable_aleatoire = Random::aleatoire(10000)/10000.0;

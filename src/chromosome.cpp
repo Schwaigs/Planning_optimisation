@@ -16,10 +16,16 @@ chromosome::chromosome(int tc)
 	// un chromosome est compos� de 'taille' g�nes,
 	// les g�nes sont carat�ris� par un entier compris entre 0 et 'taille-1'
 	genes = new int[taille];
+	//initialisation a -1 partout car 0 est une valeur valide qu'il faut différencier
+	for(int i=0; i<taille; i++){
+		genes[i] = -1;
+	}
 
 	//on parcourt la liste des apprenants pour leur attribuer à chacun une interface
 	for(int i=0; i<taille; i++)
 	{	
+		cout << "Apprenant " << i << endl;
+
 		//on stocke les interfaces possedants la bonne competence
 		int competenceApprenant = formation[i][2];
 		list<int> interfaceMatch;
@@ -30,6 +36,12 @@ chromosome::chromosome(int tc)
 				interfaceMatch.push_back(j);
 			}
 		}
+
+		cout << "	Interface avec la bonne compérente : {";
+		for(list<int>::iterator it = interfaceMatch.begin(); it != interfaceMatch.end(); it++){
+			cout << *it << " ";
+		}
+		cout << "}" << endl;
 
 		//on verifie que ces intefaces sont bien disponibles pour ce creneau de formation
 		for(list<int>::iterator it = interfaceMatch.begin(); it != interfaceMatch.end(); it++){
@@ -45,23 +57,25 @@ chromosome::chromosome(int tc)
 			for(int k=0; dispo && k<taille; k++){
 
 				//si l'interface est deja affectee a une formation ce jour là
-				if(genes[k] == idIntervenant && formation[k][3] == jCreneauCourant){
+				if(genes[k] != -1 && genes[k] == idIntervenant && formation[k][3] == jCreneauCourant){
 					//on verfife la compatibilite des horaires
-
+					cout << "	Intervenant " << idIntervenant << " déjà affectée au creneau " << k << endl;
 					int centreCreneauAffecte = formation[k][1];
 					int hDebutCreneauAffecte = formation[k][4];
 					int hFinCreneauAffecte = formation[k][5];
 
 					if((hFinCreneauAffecte > hDebutCreneauCourant) && (hDebutCreneauAffecte < hFinCreneauCourant)){
 						dispo = false;
+						cout << "		Creneau pas compatible " << endl;
 					}
 
 					//si le centre de formation est le même
 					//l'heure de debut et l'heure de fin de deux creneaux qui se suivent peuvent être la même
 					//sinon ce n'est pas possible car il ya le temps de trajet entre les deux centre
-					if( (centreCreneauAffecte != centreCreneauCourant) && 
+					else if( (centreCreneauAffecte != centreCreneauCourant) && 
 						((hFinCreneauAffecte == hDebutCreneauCourant) || (hDebutCreneauAffecte == hFinCreneauCourant)) ){
 						dispo = false;
+						cout << "		Creneau pas compatible " << endl;
 					}
 				}
 			}
@@ -71,14 +85,21 @@ chromosome::chromosome(int tc)
 				if( (tempsRestantIntervenants[idIntervenant] - (hFinCreneauCourant-hDebutCreneauCourant)) < 0){
 					dispo = false;
 				}
+				cout << "		Intervenant " << idIntervenant << " Nb heures après ajout creneau = " << tempsRestantIntervenants[idIntervenant] - (hFinCreneauCourant-hDebutCreneauCourant) << endl;
 			}
 
 			//si l'interface n'est pas disponible on la retire de la liste
 			if(!dispo){
-				interfaceMatch.erase(it);
+				it = interfaceMatch.erase(it);
 			}
 
 		}
+
+		cout << "	Interface encore dispo : {";
+		for(list<int>::iterator it = interfaceMatch.begin(); it != interfaceMatch.end(); it++){
+			cout << *it << " ";
+		}
+		cout << "}" << endl;
 
 		//on choisi enfin aléatoirement linterface qui sera affectée pour le creneau parmis celles disponibles
 		int a = Random::aleatoire(interfaceMatch.size());
@@ -89,6 +110,10 @@ chromosome::chromosome(int tc)
 			it++;
 		}
 		genes[i] = *it;
+		cout << "	Intervenant affectéé = " << genes[i] << endl;
+
+		//on met à jour son nombre d'heure restant
+		tempsRestantIntervenants[genes[i]] -= formation[i][5]-formation[i][4];
 	}
 }
 

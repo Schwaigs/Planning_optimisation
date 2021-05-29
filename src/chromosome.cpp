@@ -1,3 +1,4 @@
+#include <list>
 #include "chromosome.h"
 
 using namespace std;
@@ -5,82 +6,96 @@ using namespace std;
 // initialisation des param�tres d'un chromosome
 chromosome::chromosome(int tc)
 {
-	int a;
-	bool recommence = true;
-	taille          = tc;
+	//au depart chacune des interface est encore plainement disponible, elle a donc 35h restantes
+	tempsRestantIntervenants =  new int[NBR_INTERFACES];
+	for(int i=0; i<NBR_INTERFACES; i++){
+		tempsRestantIntervenants[i] = 35;
+	}
+
+	taille = tc;
 	// un chromosome est compos� de 'taille' g�nes,
 	// les g�nes sont carat�ris� par un entier compris entre 0 et 'taille-1'
-	// il ne peux avoir 2 fois le m�me g�ne dans un chromosome
 	genes = new int[taille];
-	//  Arbitrairement, on choisit de toujours commencer un chromosome par le g�ne 0
-	genes[0] = 0;
-	for(int i=1; i<taille; i++)
-	{
-		recommence = true;
-		while(recommence)
-		{
-			recommence = false;
-			// on tire al�atoirement le g�ne suivante
-			a = Random::aleatoire(taille);
-			// le g�ne ne doit pas �tre d�j� dans le chromosome
-			// si tel est le cas on re-tire al�atoirement le g�ne
-			for (int j=0; j<i; j++)
-				if (a==genes[j])
-					recommence = true;
+
+	//on parcourt la liste des apprenants pour leur attribuer à chacun une interface
+	for(int i=0; i<taille; i++)
+	{	
+		//on stocke les interfaces possedants la bonne competence
+		int competenceApprenant = formation[i][2];
+		list<int> interfaceMatch;
+
+		for(int j=0; j<NBR_INTERFACES; j++){
+			bool checkCompetenceIntervenant = competences_interfaces[j][competenceApprenant];
+			if(checkCompetenceIntervenant){
+				interfaceMatch.push_back(j);
+			}
 		}
-		genes[i]=a;
+
+		//on verifie que ces intefaces sont bien disponibles pour ce creneau de formation
+		for(list<int>::iterator it = interfaceMatch.begin(); it != interfaceMatch.end(); it++){
+			int idIntervenant = *it;
+			bool dispo = true;
+			
+			int centreCreneauCourant = formation[i][1];
+			int jCreneauCourant = formation[i][3];
+			int hDebutCreneauCourant = formation[i][4];
+			int hFinCreneauCourant = formation[i][5];
+
+			//on parcours la solution pour trouver les creneaux de formation où l'interface est déjà affectée
+			for(int k=0; dispo && k<taille; k++){
+
+				//si l'interface est deja affectee a une formation ce jour là
+				if(genes[k] == idIntervenant && formation[k][3] == jCreneauCourant){
+					//on verfife la compatibilite des horaires
+
+					int centreCreneauAffecte = formation[k][1];
+					int hDebutCreneauAffecte = formation[k][4];
+					int hFinCreneauAffecte = formation[k][5];
+
+					if((hFinCreneauAffecte > hDebutCreneauCourant) && (hDebutCreneauAffecte < hFinCreneauCourant)){
+						dispo = false;
+					}
+
+					//si le centre de formation est le même
+					//l'heure de debut et l'heure de fin de deux creneaux qui se suivent peuvent être la même
+					//sinon ce n'est pas possible car il ya le temps de trajet entre les deux centre
+					if( (centreCreneauAffecte != centreCreneauCourant) && 
+						((hFinCreneauAffecte == hDebutCreneauCourant) || (hDebutCreneauAffecte == hFinCreneauCourant)) ){
+						dispo = false;
+					}
+				}
+			}
+
+			//si l'interface est toujours disponible, on verifie qu'elle ne depassera pas les 35h en lui ajoutant le creneau courant
+			if(dispo){
+				if( (tempsRestantIntervenants[idIntervenant] - (hFinCreneauCourant-hDebutCreneauCourant)) < 0){
+					dispo = false;
+				}
+			}
+
+			//si l'interface n'est pas disponible on la retire de la liste
+			if(!dispo){
+				interfaceMatch.erase(it);
+			}
+
+		}
+
+		//on choisi enfin aléatoirement linterface qui sera affectée pour le creneau parmis celles disponibles
+		int a = Random::aleatoire(interfaceMatch.size());
+
+		//on parcours la liste des interfaces disponibles
+		list<int>::iterator it = interfaceMatch.begin();
+		for (int j=0; j<=a; j++){
+			it++;
+		}
+		genes[i] = *it;
 	}
-	// on impose arbitrairement que gene[1] > gene[taille-1]
-	ordonner();
 }
 
 // destruction de l'objet 'chromosome'
 chromosome::~chromosome()
 {
 	delete genes;
-}
-
-// on impose arbitrairement que la 2i�me ville visit�e (gene[1])
-//   ait un n� plus petit que la derni�re ville visit�e (gene[taille-1])
-//   i.e. : gene[1] > gene[taille-1]
-void chromosome::ordonner()
-{
-	int inter, k;
-	// Place la ville "0" en t�te du chromosome (genes[0])
-	if (genes[0] != 0)
-	{
-		int position_0=0;
-		int * genes_c = new int[taille];
-		for (int i=0; i<taille; i++)
-		{
-			genes_c[i] = genes[i];
-			if (genes[i] == 0)
-				position_0=i;
-		}
-		k=0;
-		for (int i=position_0; i<taille; i++)
-		{
-			genes[k] = genes_c[i];
-			k++;
-		}
-		for (int i=0; i<position_0; i++)
-		{
-			genes[k] = genes_c[i];
-			k++;
-		}
-		delete[] genes_c;
-	}
-
-	// Le num�ro de la 2eme ville doit �tre plus petit que celui de la derni�re ville
-	if (genes[1] > genes[taille-1])
-	{
-		for(int k=1; k<=1+(taille-2)/2; k++)
-		{
-			inter = genes[k];
-			genes[k] = genes[taille-k];
-			genes[taille-k] = inter;
-		}
-	}
 }
 
 // �valuation d'une solution : fonction qui calcule la fitness d'une solution
@@ -116,7 +131,7 @@ void chromosome::echange_2_genes_consecutifs()
 	// on �change le g�ne s�l�ctionn� al�atoirement avec le g�ne le succ�dant
 	echange_2_genes(i, i+1);
 
-	ordonner();
+	//ordonner();
 }
 
 void chromosome::echange_2_genes_quelconques()
@@ -132,7 +147,7 @@ void chromosome::echange_2_genes_quelconques()
 	//puis on echange les deux genes
 	echange_2_genes(i, j);
 
-	ordonner();
+	//ordonner();
 }
 
 void chromosome::deplacement_1_gene()

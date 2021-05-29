@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <iostream>
-#include "ae.h"
+#include "Ae.h"
 #include "chromosome.h"
 #include "random.h"
 
@@ -12,14 +12,14 @@ int main(int argc, char **argv)
 // argc : nombre de parametres
 // argv : tableau contenant les parametres
 // Soit l'executable 'algo_evo' ne prend pas d'arguments soit il prend 6 arguments :
-//    1. nombre de génération (entier > 0)
+//    1. nombre de gï¿½nï¿½ration (entier > 0)
 //    2. taille de la population (entier > 0)
 //    3. taux de croisement (0 <= reel <= 1)
 //    4. taux de mutation (0 <= reel <= 1)
 //    5. nombre de villes (=taille d'un chromosome)
 //    6. nom du fichier indiquant les distances entre villes
 {
-	//initialise le générateur de nombre aléatoire
+	//initialise le gï¿½nï¿½rateur de nombre alï¿½atoire
 	Random::randomize();
 
 	// valeurs par defaut
@@ -48,7 +48,7 @@ int main(int argc, char **argv)
 	{
 		cout << "Nombre d'arguments n'est pas correct." << endl;
 		cout << "Soit l'executable 'algo_evo' ne prend pas d'arguments soit il prend 6 arguments : " << endl;
-		cout << "   1. nombre de génération (entier > 0)" << endl;
+		cout << "   1. nombre de gï¿½nï¿½ration (entier > 0)" << endl;
 		cout << "   2. taille de la population (entier > 0)" << endl;
 		cout << "   3. taux de croisement (0 <= reel <= 1)" << endl;
 		cout << "   4. taux de mutation (0 <= reel <= 1)" << endl;
@@ -57,20 +57,20 @@ int main(int argc, char **argv)
 		exit(EXIT_FAILURE);
 	}
 
-	// initialise l'algorithme évolutionniste
+	// initialise l'algorithme ï¿½volutionniste
 	Ae algo(nb_generation, taille_population, taux_croisement, taux_mutation, taille_chromosome, fileDistances);
 	// arguments du constructeur de l'objet Ae
-	//    1. nombre de génération (entier > 0)
+	//    1. nombre de gï¿½nï¿½ration (entier > 0)
 	//    2. taille de la population (entier > 0)
 	//    3. taux de croisement (0 <= reel <= 1)
 	//    4. taux de mutation (0 <= reel <= 1)
 	//    5. nombre de villes (=taille d'un chromosome)
 	//    6. nom du fichier indiquant les distances entre villes
 
-	// lance l'algorithme évolutionniste
+	// lance l'algorithme ï¿½volutionniste
 	chromosome *best = algo.optimiser();
 
-	// affiche la fitness du meilleur individu trouvé
+	// affiche la fitness du meilleur individu trouvï¿½
 	cout << "La meilleure solution trouvee est : ";
 	best->afficher();
 }

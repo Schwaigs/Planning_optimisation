@@ -39,7 +39,7 @@ public:
     chromosome* selection_aleatoire();                // s�lection et de remplacement al�toire
     void remplacement_aleatoire(chromosome* individu);// remplacement al�toire
     
-    int in_list(chromosome* indiv, chromosome** individusTires, int taille){
+    int in_list(chromosome* indiv, chromosome** individusTires, int taille);
     void ordonner();
     void reordonner();
     void afficher();

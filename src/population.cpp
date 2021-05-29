@@ -136,7 +136,7 @@ chromosome* population::selection_roulette()
 chromosome* population::selection_tournoi()
 {
     int n = 5; //nombre d'individus tirés
-	int fitness_max   = individus[0]->fitness;
+	chromosome* chromosomeFitnessMax;
     int index_indiv; //index de l'individu tiré
     chromosome* individusTires[n];
     //tirage de n individus
@@ -146,9 +146,18 @@ chromosome* population::selection_tournoi()
             index_indiv = (rand()%taille_pop-1);
         } while (in_list(individus[index_indiv], individusTires, n));
         individusTires[i] = individus[index_indiv];
-        
-
     }
+    if(chromosomeFitnessMax == nullptr){
+        chromosomeFitnessMax = individusTires[0];
+    }
+
+    for(int i=0; i<n; i++){
+        if(individusTires[i]->fitness > chromosomeFitnessMax->fitness){
+            chromosomeFitnessMax = individusTires[i];
+        }
+    }
+
+    return chromosomeFitnessMax;
 }
 
 int population::in_list(chromosome* indiv, chromosome** individusTires, int taille){

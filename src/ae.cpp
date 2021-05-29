@@ -2,7 +2,7 @@
 
 using namespace std;
 
-// initialisation des paramètres de l'AG et génération de la population initiale
+// initialisation des paramï¿½tres de l'AG et gï¿½nï¿½ration de la population initiale
 Ae::Ae(int nbg, int tp, double tcroisement, double tmutation, int tc, char* nom_fichier)
 {
 	nbgenerations     = nbg;
@@ -20,7 +20,7 @@ Ae::~Ae()
 	delete pop;
 }
 
-// procédure principale de la recherche
+// procï¿½dure principale de la recherche
 chromosome* Ae::optimiser()
 {
 	int amelioration = 0;
@@ -30,7 +30,7 @@ chromosome* Ae::optimiser()
 	chromosome *pere2;
 	int best_fitness;
 
-	// évaluation des individus de la population initiale
+	// ï¿½valuation des individus de la population initiale
 	for(int ind=0; ind<taille_pop; ind++)
 		pop->individus[ind]->evaluer(les_distances);
 
@@ -42,14 +42,14 @@ chromosome* Ae::optimiser()
 	cout << "Quelques statistiques sur la population initiale" << endl;
 	pop->statiatiques();
 
-	//tant que le nombre de générations limite n'est pas atteint
+	//tant que le nombre de gï¿½nï¿½rations limite n'est pas atteint
 	for(int g=0; g<nbgenerations; g++)
 	{
-		//sélection de deux individus de la population courante
+		//sï¿½lection de deux individus de la population courante
 		pere1 = pop->selection_roulette();
 		pere2 = pop->selection_roulette();
 
-		// On effectue un croisementavec une probabilité "taux_croisement"
+		// On effectue un croisementavec une probabilitï¿½ "taux_croisement"
 		if(Random::aleatoire(1000)/1000.0 < taux_croisement)
 		{
 			croisement1X(pere1, pere2, fils1, fils2);
@@ -60,15 +60,15 @@ chromosome* Ae::optimiser()
 			fils2->copier(pere2);
 		}
 
-		// On effectue la mutation d'un enfant avec une probabilité "taux_mutation"
+		// On effectue la mutation d'un enfant avec une probabilitï¿½ "taux_mutation"
 		if(Random::aleatoire(1000)/1000.0 < taux_mutation)
 			fils1->echange_2_genes_consecutifs();
 
-		// On effectue la mutation de l'autre enfant avec une probabilité "taux_mutation"
+		// On effectue la mutation de l'autre enfant avec une probabilitï¿½ "taux_mutation"
 		if(Random::aleatoire(1000)/1000.0 < taux_mutation)
 			fils2->echange_2_genes_consecutifs();
 
-		// évaluation des deux nouveaux individus générés
+		// ï¿½valuation des deux nouveaux individus gï¿½nï¿½rï¿½s
 		fils1->evaluer(les_distances);
 		fils2->evaluer(les_distances);
 
@@ -76,10 +76,10 @@ chromosome* Ae::optimiser()
 		pop->remplacement_roulette(fils1);
 		pop->remplacement_roulette(fils2);
 
-		// On réordonne la population selon la fitness
+		// On rï¿½ordonne la population selon la fitness
 		pop->reordonner();
 
-		// Si l'un des nouveaux indivudus-solutions est le meilleur jamais renconté
+		// Si l'un des nouveaux indivudus-solutions est le meilleur jamais rencontï¿½
 		if (pop->individus[pop->ordre[0]]->fitness < best_fitness)
 		{
 			best_fitness = pop->individus[pop->ordre[0]]->fitness;
@@ -90,21 +90,21 @@ chromosome* Ae::optimiser()
 	//  on affiche les statistiques de la population finale
 	cout << "Quelques statistiques sur la population finale" << endl;
 	pop->statiatiques();
-	//  on affiche la consanginité de la population finale
+	//  on affiche la consanginitï¿½ de la population finale
 	pop->similitude();
 
-	//retourner le meilleur individu rencontré pendant la recherche
+	//retourner le meilleur individu rencontrï¿½ pendant la recherche
 	return pop->individus[pop->ordre[0]];
 }
 
-// opérateur de croisement à un point : croisement 1X
-// 1) l'opérateur 1X choisit de manière aléatoire un point de croisement
-// 2) l'opérateur 1X recopie le début du parent 1 au début de l'enfant 1
-//                     et le début du parent 2 au début de l'enfant 2.
-// 3) l'opérateur 1X complète l'enfant 1 avec les gènes manquant en les plaçant dans l'ordre du parent 2
-//                         et l'enfant 2 avec les gènes manquant en les plaçant dans l'ordre du parent 1.
+// opï¿½rateur de croisement ï¿½ un point : croisement 1X
+// 1) l'opï¿½rateur 1X choisit de maniï¿½re alï¿½atoire un point de croisement
+// 2) l'opï¿½rateur 1X recopie le dï¿½but du parent 1 au dï¿½but de l'enfant 1
+//                     et le dï¿½but du parent 2 au dï¿½but de l'enfant 2.
+// 3) l'opï¿½rateur 1X complï¿½te l'enfant 1 avec les gï¿½nes manquant en les plaï¿½ant dans l'ordre du parent 2
+//                         et l'enfant 2 avec les gï¿½nes manquant en les plaï¿½ant dans l'ordre du parent 1.
 //    Le 1ier fils est le produit de la partie haute du premier parent et
-//    de la partie basse du deuxième parent et inversement pour le 2ème fils
+//    de la partie basse du deuxiï¿½me parent et inversement pour le 2ï¿½me fils
 void Ae::croisement1X(chromosome* parent1, chromosome* parent2,
                       chromosome* enfant1, chromosome* enfant2)
 {
@@ -119,16 +119,16 @@ void Ae::croisement1X(chromosome* parent1, chromosome* parent2,
 		odre_parent2[parent2->genes[i]] = i;
 	}
 
-	// 1) l'opérateur 1X choisit de manière aléatoire le point de croisement
+	// 1) l'opï¿½rateur 1X choisit de maniï¿½re alï¿½atoire le point de croisement
 	int point = Random::aleatoire(nb_genes);
 
-	// 2) l'opérateur 1X recopie le début du parent 1 au début de l'enfant 1
-	//                     et le début du parent 2 au début de l'enfant 2.
+	// 2) l'opï¿½rateur 1X recopie le dï¿½but du parent 1 au dï¿½but de l'enfant 1
+	//                     et le dï¿½but du parent 2 au dï¿½but de l'enfant 2.
 	enfant1->copier(parent1);
 	enfant2->copier(parent2);
 
-	// 3) l'opérateur 1X complète l'enfant 1 avec les gènes manquant en les plaçant dans l'ordre du parent 2
-	//                         et l'enfant 2 avec les gènes manquant en les plaçant dans l'ordre du parent 1.
+	// 3) l'opï¿½rateur 1X complï¿½te l'enfant 1 avec les gï¿½nes manquant en les plaï¿½ant dans l'ordre du parent 2
+	//                         et l'enfant 2 avec les gï¿½nes manquant en les plaï¿½ant dans l'ordre du parent 1.
 	for (int k=point+1; k<nb_genes; k++)
 	{
 		for (int l=k+1; l<nb_genes; l++)
@@ -143,12 +143,12 @@ void Ae::croisement1X(chromosome* parent1, chromosome* parent2,
 	delete[] odre_parent2;
 }
 
-// opérateur de croisement à deux points : croisement 2X
-// 1) l'opérateur 2X choisit de manière aléatoire 2 points de croisement
-// 2) l'opérateur 2X recopie le début du parent 1 au début de l'enfant 1
-//                        et le début du parent 2 au début de l'enfant 2.
-// 3) l'opérateur 2X complète l'enfant 1 avec les gènes manquant en les plaçant dans l'ordre du parent 2
-//                         et l'enfant 2 avec les gènes manquant en les plaçant dans l'ordre du parent 1.
+// opï¿½rateur de croisement ï¿½ deux points : croisement 2X
+// 1) l'opï¿½rateur 2X choisit de maniï¿½re alï¿½atoire 2 points de croisement
+// 2) l'opï¿½rateur 2X recopie le dï¿½but du parent 1 au dï¿½but de l'enfant 1
+//                        et le dï¿½but du parent 2 au dï¿½but de l'enfant 2.
+// 3) l'opï¿½rateur 2X complï¿½te l'enfant 1 avec les gï¿½nes manquant en les plaï¿½ant dans l'ordre du parent 2
+//                         et l'enfant 2 avec les gï¿½nes manquant en les plaï¿½ant dans l'ordre du parent 1.
 void Ae::croisement2X(chromosome* parent1, chromosome* parent2,
                       chromosome* enfant_s1, chromosome* enfant_s2)
 {

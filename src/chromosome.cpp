@@ -191,6 +191,7 @@ void chromosome::echange_2_genes_quelconques()
 
 void chromosome::deplacement_1_gene()
 {
+    int debut, fin;
 	//on selection un gene et une position aleatoirement
 	int i = Random::aleatoire(taille);
 	int pos = Random::aleatoire(taille);

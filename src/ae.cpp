@@ -73,9 +73,10 @@ chromosome* Ae::optimiser()
 		enfant2->evaluer(les_distances);
 
 		// Insertion des nouveaux individus dans la population
+        
+		pop->remplacement_tournoi(enfant1);
+		pop->remplacement_tournoi(enfant2);
         /*
-		pop->remplacement_roulette(enfant1);
-		pop->remplacement_roulette(enfant2);*/
         for (int i = 0; i < taille_pop-1; i++){
             if (pop->individus[i]==pere)
             {
@@ -84,7 +85,7 @@ chromosome* Ae::optimiser()
                 pop->individus[i]==enfant2;
             }
             
-        }
+        }*/
 
 		// On r�ordonne la population selon la fitness
 		pop->reordonner();

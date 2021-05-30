@@ -24,7 +24,7 @@ int main(int argc, char **argv)
 
 	// valeurs par defaut
 	int nb_generation     = 50;
-	int taille_population = 20;
+	int taille_population = NBR_APPRENANTS * 2;
 	float taux_croisement = 0.8;
 	float taux_mutation   = 0.5;
 	int taille_chromosome = NBR_APPRENANTS;

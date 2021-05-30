@@ -22,10 +22,8 @@ chromosome::chromosome(int tc)
 	}
 
 	//on parcourt la liste des apprenants pour leur attribuer à chacun une interface
-	for(int i=0; i<taille; i++)
-	{	
-		cout << "Apprenant " << i << endl;
-
+	for(int i=0; i<taille; i++){
+		
 		//on stocke les interfaces possedants la bonne competence
 		int competenceApprenant = formation[i][2];
 		list<int> interfaceMatch;
@@ -37,80 +35,35 @@ chromosome::chromosome(int tc)
 			}
 		}
 
-		cout << "	Interface avec la bonne compérente : {";
-		for(list<int>::iterator it = interfaceMatch.begin(); it != interfaceMatch.end(); it++){
-			cout << *it << " ";
-		}
-		cout << "}" << endl;
-
-		//on verifie que ces intefaces sont bien disponibles pour ce creneau de formation
+		//on verifie que ces interfaces sont bien disponibles pour ce creneau de formation
 		for(list<int>::iterator it = interfaceMatch.begin(); it != interfaceMatch.end(); it++){
 			int idIntervenant = *it;
-			bool dispo = true;
-			
-			int centreCreneauCourant = formation[i][1];
-			int jCreneauCourant = formation[i][3];
-			int hDebutCreneauCourant = formation[i][4];
-			int hFinCreneauCourant = formation[i][5];
-
-			//on parcours la solution pour trouver les creneaux de formation où l'interface est déjà affectée
-			for(int k=0; dispo && k<taille; k++){
-
-				//si l'interface est deja affectee a une formation ce jour là
-				if(genes[k] != -1 && genes[k] == idIntervenant && formation[k][3] == jCreneauCourant){
-					//on verfife la compatibilite des horaires
-					cout << "	Intervenant " << idIntervenant << " déjà affectée au creneau " << k << endl;
-					int centreCreneauAffecte = formation[k][1];
-					int hDebutCreneauAffecte = formation[k][4];
-					int hFinCreneauAffecte = formation[k][5];
-
-					if((hFinCreneauAffecte > hDebutCreneauCourant) && (hDebutCreneauAffecte < hFinCreneauCourant)){
-						dispo = false;
-						cout << "		Creneau pas compatible " << endl;
-					}
-
-					//si le centre de formation est le même
-					//l'heure de debut et l'heure de fin de deux creneaux qui se suivent peuvent être la même
-					//sinon ce n'est pas possible car il ya le temps de trajet entre les deux centre
-					else if( (centreCreneauAffecte != centreCreneauCourant) && 
-						((hFinCreneauAffecte == hDebutCreneauCourant) || (hDebutCreneauAffecte == hFinCreneauCourant)) ){
-						dispo = false;
-						cout << "		Creneau pas compatible " << endl;
-					}
-				}
-			}
+			bool dispo = interfaceDispo(idIntervenant, i);
 
 			//si l'interface est toujours disponible, on verifie qu'elle ne depassera pas les 35h en lui ajoutant le creneau courant
 			if(dispo){
-				if( (tempsRestantIntervenants[idIntervenant] - (hFinCreneauCourant-hDebutCreneauCourant)) < 0){
+				if( (tempsRestantIntervenants[idIntervenant] - (formation[i][5]-formation[i][4])) < 0){
 					dispo = false;
 				}
-				cout << "		Intervenant " << idIntervenant << " Nb heures après ajout creneau = " << tempsRestantIntervenants[idIntervenant] - (hFinCreneauCourant-hDebutCreneauCourant) << endl;
 			}
 
 			//si l'interface n'est pas disponible on la retire de la liste
 			if(!dispo){
 				it = interfaceMatch.erase(it);
+				--it;
 			}
 
 		}
 
-		cout << "	Interface encore dispo : {";
-		for(list<int>::iterator it = interfaceMatch.begin(); it != interfaceMatch.end(); it++){
-			cout << *it << " ";
-		}
-		cout << "}" << endl;
-
-		//on choisi enfin aléatoirement linterface qui sera affectée pour le creneau parmis celles disponibles
+		//on choisi enfin aléatoirement l'interface qui sera affectée pour le creneau parmis celles disponibles
 		int a = Random::aleatoire(interfaceMatch.size());
 
 		//on parcours la liste des interfaces disponibles
 		list<int>::iterator it = interfaceMatch.begin();
-		for (int j=0; j<=a; j++){
+		for (int j=0; j<a; j++){
 			it++;
 		}
 		genes[i] = *it;
-		cout << "	Intervenant affectéé = " << genes[i] << endl;
 
 		//on met à jour son nombre d'heure restant
 		tempsRestantIntervenants[genes[i]] -= formation[i][5]-formation[i][4];
@@ -121,6 +74,67 @@ chromosome::chromosome(int tc)
 chromosome::~chromosome()
 {
 	delete genes;
+}
+
+//vérifie la disponibilité d'une interface pour un creaneau de formation
+bool chromosome::interfaceDispo(int idIntervenant, int idFormation){
+	bool dispo = true; 
+
+	int centreCreneauCourant = formation[idFormation][1];
+	int jCreneauCourant = formation[idFormation][3];
+	int hDebutCreneauCourant = formation[idFormation][4];
+	int hFinCreneauCourant = formation[idFormation][5];
+
+	//on parcours la solution pour trouver les creneaux de formation où l'interface est déjà affectée
+	for(int i=0; dispo && i<taille; i++){
+		//on verfife la compatibilite des horaires
+
+		//si l'interface est deja affectee a une formation ce jour là
+		if(genes[i] != -1 && i != idFormation && genes[i] == idIntervenant && formation[i][3] == jCreneauCourant){
+			//on verfife la compatibilite des horaires
+			int centreCreneauAffecte = formation[i][1];
+			int hDebutCreneauAffecte = formation[i][4];
+			int hFinCreneauAffecte = formation[i][5];
+
+			if((hFinCreneauAffecte > hDebutCreneauCourant) && (hDebutCreneauAffecte < hFinCreneauCourant)){
+				dispo = false;
+			}
+
+			//si le centre de formation est le même
+			//l'heure de debut et l'heure de fin de deux creneaux qui se suivent peuvent être la même
+			//sinon ce n'est pas possible car il ya le temps de trajet entre les deux centre
+			else if( (centreCreneauAffecte != centreCreneauCourant) && 
+				((hFinCreneauAffecte == hDebutCreneauCourant) || (hDebutCreneauAffecte == hFinCreneauCourant)) ){
+				dispo = false;
+			}
+		}
+	}
+
+	return dispo;
+}
+
+//vérifie la validité d'une solution
+bool chromosome::valide(){
+
+	bool valide = true;
+
+	//on parcourt la liste des apprenants pour verifier que l'intervenant qui lui est affecté réponds aux critères de validité
+	for(int i=0; valide && i<taille; i++){
+
+		int idIntervenant = genes[i];
+
+		//l'intervenant doit posseder la bonne compétence
+		int competenceApprenant = formation[i][2];
+		valide  = competences_interfaces[idIntervenant][competenceApprenant];
+
+		//l'intervenant doit être disponible sur le creneau horaire de la formation
+		valide = valide && interfaceDispo(idIntervenant, i);
+
+		//l'intervenant ne doit pas depasser les 35h
+		valide = valide && (tempsRestantIntervenants[idIntervenant] >= 0);
+	}
+
+	return valide;
 }
 
 // �valuation d'une solution : fonction qui calcule la fitness d'une solution

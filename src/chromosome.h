@@ -21,6 +21,8 @@ public:
 	~chromosome();      // destructeur de l'objet
 
 	// METHODES
+    bool interfaceDispo(int idIntervenant, int idFormation); //vérifie la disponibilité d'une interface pour un creaneau de formation
+    bool valide(); //vérifie la validité d'une solution
 	void afficher();    // fonction d'affichage du chromosome (i.e. de la solution)
 	void evaluer(int **distance);
 	                    // fonction d'�valuation du chromosome (c-�-d calcul la fitness)

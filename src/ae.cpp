@@ -165,11 +165,6 @@ void Ae::test_acces_donnees_instances()
 	int idApprenant = 5;
 	int idIntervenant = 6;
 
-	int competenceApprenant = formation[idApprenant][2];
-	cout << "Competences demandée par l'apprenant = " << competenceApprenant << endl;
-	bool checkCompetenceIntervenant = competences_interfaces[idIntervenant][competenceApprenant];
-	cout << "L'intervenant possede la bonne compétence = " << checkCompetenceIntervenant << endl;
-
 	int specialiteApprenant = formation[idApprenant][1];
 	bool checkSpecialiteIntervenant = specialite_interfaces[idIntervenant][specialiteApprenant];
 	cout << "L'intervenant possede la bonne Spécialité = " << checkSpecialiteIntervenant << endl;
@@ -177,6 +172,6 @@ void Ae::test_acces_donnees_instances()
 	int distance = abs(sqrt(pow(coord[specialiteApprenant+1][0] - coord[0][0],2) + pow(coord[specialiteApprenant+1][1] - coord[0][1],2)));
 	cout << "Coordonées SESSAD = [" << coord[0][0] << "," << coord[0][1] << "]" << endl;
 	cout << "Coordonées du centre de formation de l'apprenant = [" << coord[specialiteApprenant+1][0] << "," << coord[specialiteApprenant+1][1] << "]" << endl;
-	cout << "Distance entre les cdeux centres = " << distance << endl;
+	cout << "Distance entre les deux centres = " << distance << endl;
 }
 

@@ -12,6 +12,7 @@ using namespace std;
 int main(int argc, char **argv)
 // argc : nombre de parametres
 // argv : tableau contenant les parametres
+
 // Soit l'executable 'algo_evo' ne prend pas d'arguments soit il prend 5 arguments :
 //    1. nombre de g�n�ration (entier > 0)
 //    2. taille de la population (entier > 0)

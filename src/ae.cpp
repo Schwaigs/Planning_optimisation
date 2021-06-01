@@ -25,10 +25,10 @@ Ae::~Ae()
 chromosome* Ae::optimiser()
 {
 	int amelioration = 0;
-	chromosome *fils1 = new chromosome(taille_chromosome);
-	chromosome *fils2 = new chromosome(taille_chromosome);
-	chromosome *pere1;
-	chromosome *pere2;
+	chromosome *enfant1 = new chromosome(taille_chromosome);
+	chromosome *enfant2 = new chromosome(taille_chromosome);
+	chromosome *pere;
+	chromosome *mere;
 	int best_fitness;
 
 	// �valuation des individus de la population initiale
@@ -47,35 +47,46 @@ chromosome* Ae::optimiser()
 	for(int g=0; g<nbgenerations; g++)
 	{
 		//s�lection de deux individus de la population courante
-		pere1 = pop->selection_roulette();
-		pere2 = pop->selection_roulette();
+		pere = pop->selection_tournoi();
+		mere = pop->selection_tournoi();
 
 		// On effectue un croisementavec une probabilit� "taux_croisement"
 		if(Random::aleatoire(1000)/1000.0 < taux_croisement)
 		{
-			croisement1X(pere1, pere2, fils1, fils2);
+			croisement1X(pere, mere, enfant1, enfant2);
 		}
 		else
 		{
-			fils1->copier(pere1);
-			fils2->copier(pere2);
+			enfant1->copier(pere);
+			enfant2->copier(mere);
 		}
 
 		// On effectue la mutation d'un enfant avec une probabilit� "taux_mutation"
 		if(Random::aleatoire(1000)/1000.0 < taux_mutation)
-			fils1->echange_2_genes_consecutifs();
+			enfant1->echange_2_genes_consecutifs();
 
 		// On effectue la mutation de l'autre enfant avec une probabilit� "taux_mutation"
 		if(Random::aleatoire(1000)/1000.0 < taux_mutation)
-			fils2->echange_2_genes_consecutifs();
+			enfant2->echange_2_genes_consecutifs();
 
 		// �valuation des deux nouveaux individus g�n�r�s
-		//fils1->evaluer(les_distances);
-		//fils2->evaluer(les_distances);
+		enfant1->evaluer(/*les_distances*/);
+		enfant2->evaluer(/*les_distances*/);
 
 		// Insertion des nouveaux individus dans la population
-		pop->remplacement_roulette(fils1);
-		pop->remplacement_roulette(fils2);
+        
+		pop->remplacement_tournoi(enfant1);
+		pop->remplacement_tournoi(enfant2);
+        /*
+        for (int i = 0; i < taille_pop-1; i++){
+            if (pop->individus[i]==pere)
+            {
+                pop->individus[i]==enfant1;
+            }else if(pop->individus[i]==mere){
+                pop->individus[i]==enfant2;
+            }
+            
+        }*/
 
 		// On r�ordonne la population selon la fitness
 		pop->reordonner();
@@ -104,8 +115,8 @@ chromosome* Ae::optimiser()
 //                     et le d�but du parent 2 au d�but de l'enfant 2.
 // 3) l'op�rateur 1X compl�te l'enfant 1 avec les g�nes manquant en les pla�ant dans l'ordre du parent 2
 //                         et l'enfant 2 avec les g�nes manquant en les pla�ant dans l'ordre du parent 1.
-//    Le 1ier fils est le produit de la partie haute du premier parent et
-//    de la partie basse du deuxi�me parent et inversement pour le 2�me fils
+//    Le 1ier enfant est le produit de la partie haute du premier parent et
+//    de la partie basse du deuxi�me parent et inversement pour le 2�me enfant
 void Ae::croisement1X(chromosome* parent1, chromosome* parent2,
                       chromosome* enfant1, chromosome* enfant2)
 {

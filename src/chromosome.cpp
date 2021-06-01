@@ -199,6 +199,7 @@ void chromosome::deplacement_1_gene()
 	while (i==pos){
 		pos = Random::aleatoire(taille);
 	}
+    int debut, fin;
 
 	//puis on insert le gene en décalant les genes qui se trouvent entre l'ancienne et la nouvelle position
 	if (pos < i) {

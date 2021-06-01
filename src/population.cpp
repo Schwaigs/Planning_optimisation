@@ -131,6 +131,50 @@ chromosome* population::selection_roulette()
 	return individus[ind];
 }
 
+
+// SELECTION PAR TOURNOI
+//op�rateur de s�lection bas� sur la fonction fitness
+chromosome* population::selection_tournoi()
+{
+    cout << "initialisation données\n";
+    int n = taille_pop/10; //nombre d'individus tirés
+	chromosome* chromosomeFitnessMin;
+    int index_indiv; //index de l'individu tiré
+    chromosome* individusTires[n];
+    //tirage de n individus
+    
+    for(int i = 0; i<n; i++){
+        do
+        {
+            index_indiv = (rand()%taille_pop-2)+1;
+        } while (index_indiv==-1 && in_list(index_indiv, individusTires, n));
+        //cout << "index " << i << " : " <<  index_indiv << "\n";
+        individusTires[i] = individus[index_indiv];
+    }
+    chromosomeFitnessMin = individusTires[0];
+
+    for(int i=0; i<n; i++){
+        if(individusTires[i]->fitness < chromosomeFitnessMin->fitness){
+            chromosomeFitnessMin = individusTires[i];
+        }
+    }
+    cout << chromosomeFitnessMin->fitness ;
+
+    return chromosomeFitnessMin;
+}
+
+int population::in_list(int index, chromosome** individusTires, int taille){
+    if(index<0){
+        return 1;
+    }
+    for(int i = 0; i<taille; i++){
+        if (individus[index] == individusTires[i]){
+            return 1;
+        }
+    }
+    return 0;
+}
+
 // op�rateur de remplacement bas� sur la roulette biais�e d'un individu de la population
 //   par un nouveau individu donn� en argument
 void population::remplacement_roulette(chromosome* individu)
@@ -156,6 +200,34 @@ void population::remplacement_roulette(chromosome* individu)
 	}
 	individus[ind]->copier(individu);
 	individus[ind]->fitness = individu->fitness;
+}
+
+void population::remplacement_tournoi(chromosome* individu){
+    cout << "initialisation données\n";
+    int n = taille_pop/10; //nombre d'individus tirés
+	chromosome* chromosomeFitnessMax;
+    int index_indiv; //index de l'individu tiré
+    int index_max=-1;
+    chromosome* individusTires[n];
+    
+    //tirage de n individus
+    for(int i = 0; i<n; i++){
+        do
+        {
+            index_indiv = (rand()%taille_pop-2)+1;
+        } while (index_indiv==-1 && in_list(index_indiv, individusTires, n));
+        //cout << "index " << i << " : " <<  index_indiv << "\n";
+        if (index_max==-1)
+        {
+            index_max=index_indiv;
+        }else if(individus[index_max]->fitness<individus[index_indiv]->fitness){
+            index_max = index_indiv;
+        }
+        cout << "fitness max : " << individus[index_max]->fitness << "courant : "<<individus[index_indiv]->fitness <<"\n";
+    }
+
+	individus[index_max]->copier(individu);
+	individus[index_max]->fitness = individu->fitness;
 }
 
 // SELECTION ALEATOIRE

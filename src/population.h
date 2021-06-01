@@ -22,20 +22,24 @@ public:
 	// METHODES
 	void statiatiques(); // affiche quelques statistiques sur la population
 	int nb_chromosomes_similaires(chromosome* chro);
-	                     // compte le nombre de chromosomes similaires à 'chro'
-	void similitude();   // affiche les résultats du comptage de chromosomes similaires
+	                     // compte le nombre de chromosomes similaires ï¿½ 'chro'
+	void similitude();   // affiche les rï¿½sultats du comptage de chromosomes similaires
 	                     // aux meilleurs individus de la population.
 
     // OPERATEURS DE SELECTION ET DE REMPLACEMENT
-    chromosome *selection_roulette();                 // seléction par roulette biaisée d'un individu de la population
-    void remplacement_roulette(chromosome *individu); // rempacement par roulette biaisée d'un individu de la population par un chromosome donné
+    chromosome *selection_roulette();                 // selï¿½ction par roulette biaisï¿½e d'un individu de la population
+    void remplacement_roulette(chromosome *individu); // rempacement par roulette biaisï¿½e d'un individu de la population par un chromosome donnï¿½
 
-    chromosome *selection_ranking(float taux_ranking);// seléction par ranking d'un individu de la population
-    void remplacement_ranking(chromosome *individu, float taux_ranking); // rempacement par ranking d'un individu de la population par un chromosome donné
+    chromosome *selection_tournoi();
+    void remplacement_tournoi(chromosome *individu);
 
-    chromosome* selection_aleatoire();                // sélection et de remplacement alétoire
-    void remplacement_aleatoire(chromosome* individu);// remplacement alétoire
+    chromosome *selection_ranking(float taux_ranking);// selï¿½ction par ranking d'un individu de la population
+    void remplacement_ranking(chromosome *individu, float taux_ranking); // rempacement par ranking d'un individu de la population par un chromosome donnï¿½
 
+    chromosome* selection_aleatoire();                // sï¿½lection et de remplacement alï¿½toire
+    void remplacement_aleatoire(chromosome* individu);// remplacement alï¿½toire
+    
+    int in_list(int index, chromosome** individusTires, int taille);
     void ordonner();
     void reordonner();
     void afficher();

@@ -137,7 +137,7 @@ chromosome* population::selection_tournoi()
 {
     cout << "initialisation données\n";
     int n = taille_pop/10; //nombre d'individus tirés
-	chromosome* chromosomeFitnessMax;
+	chromosome* chromosomeFitnessMin;
     int index_indiv; //index de l'individu tiré
     chromosome* individusTires[n];
     //tirage de n individus
@@ -150,16 +150,16 @@ chromosome* population::selection_tournoi()
         //cout << "index " << i << " : " <<  index_indiv << "\n";
         individusTires[i] = individus[index_indiv];
     }
-    chromosomeFitnessMax = individusTires[0];
+    chromosomeFitnessMin = individusTires[0];
 
     for(int i=0; i<n; i++){
-        if(individusTires[i]->fitness > chromosomeFitnessMax->fitness){
-            chromosomeFitnessMax = individusTires[i];
+        if(individusTires[i]->fitness < chromosomeFitnessMin->fitness){
+            chromosomeFitnessMin = individusTires[i];
         }
     }
-    cout << chromosomeFitnessMax->fitness ;
+    cout << chromosomeFitnessMin->fitness ;
 
-    return chromosomeFitnessMax;
+    return chromosomeFitnessMin;
 }
 
 int population::in_list(int index, chromosome** individusTires, int taille){
@@ -204,9 +204,9 @@ void population::remplacement_roulette(chromosome* individu)
 void population::remplacement_tournoi(chromosome* individu){
     cout << "initialisation données\n";
     int n = taille_pop/10; //nombre d'individus tirés
-	chromosome* chromosomeFitnessMin;
+	chromosome* chromosomeFitnessMax;
     int index_indiv; //index de l'individu tiré
-    int index_min=-1;
+    int index_max=-1;
     chromosome* individusTires[n];
     
     //tirage de n individus
@@ -216,17 +216,17 @@ void population::remplacement_tournoi(chromosome* individu){
             index_indiv = (rand()%taille_pop-2)+1;
         } while (index_indiv==-1 && in_list(index_indiv, individusTires, n));
         //cout << "index " << i << " : " <<  index_indiv << "\n";
-        if (index_min==-1)
+        if (index_max==-1)
         {
-            index_min=index_indiv;
-        }else if(individus[index_min]->fitness>individus[index_indiv]->fitness){
-            index_min = index_indiv;
+            index_max=index_indiv;
+        }else if(individus[index_max]->fitness<individus[index_indiv]->fitness){
+            index_max = index_indiv;
         }
-        cout << "fitness min : " << individus[index_min]->fitness << "courant : "<<individus[index_indiv]->fitness <<"\n";
+        cout << "fitness max : " << individus[index_max]->fitness << "courant : "<<individus[index_indiv]->fitness <<"\n";
     }
 
-	individus[index_min]->copier(individu);
-	individus[index_min]->fitness = individu->fitness;
+	individus[index_max]->copier(individu);
+	individus[index_max]->fitness = individu->fitness;
 }
 
 // SELECTION ALEATOIRE

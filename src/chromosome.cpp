@@ -144,6 +144,63 @@ void chromosome::evaluer(int **distance)
 	for(int i=0;i<taille-1;i++)
 		fitness += distance[genes[i]][genes[i+1]];
 	fitness += distance[genes[0]][genes[taille-1]];
+
+	//On créer un tableau de list 
+	//l'indice du tableau est égal à l'identifant de l'intervenant
+	//la list correspond aux différentes formations (dans l'ordre chronologiques de la semaine) auxquelles sont affectés les intervenants
+
+	//On creer une variable représentant les spécilités non respectées
+
+	//On parcours les genes du chromosomes, donc les différents créneaux de formations
+
+		//Pour chaque créneau de formation on recupère l'id de l'intervenant affectée, donc la valeur du gene
+		//On recupère aussi l'id de l'apprenant ainsi que l'identifiant du cours à partir de l'indice du gene
+
+		//On recupère le jour et l'heure de début du créneau horaire (ce sera le créneau courant)
+
+		//On parcours la list des formations auxquelles l'intervenant est affecté
+			
+			//Pour chaque formation on recupère son jour et son heure de début pour les comparer à ceux du créneau courant
+
+			//Si le jour est supérieur au jour courant
+				//Alors on sauvegarde l'identifiant formé de l'id de l'apprenant ainsi que du numéro du cours 
+				// (même formule que dans la représentation de la solution) dans la list de l'intervenant à cette position
+
+			//Sinon si le jour est le même on fait la même chose en comparant les horaire pour savoir si le creneau courant est plus tot dans la journée
+
+			//Sinon rien (on passe à la prochaine formation stockée dans la list pour la comparée au créneau courant)
+
+		//On recupère la spécialite de le formation courante
+		//On regarde si l'intervenant possède cette spécialité
+		//Si non on incrémente la variable des specialités non satisfaites
+
+
+	//Une fois toutes les formations stockés dans l'ordre chronologique
+
+	//On créer un tableau de float qui stocke la distance parcourus par chaque intervenant
+	//l'indice est l'id de l'apprenant
+	
+	//On parcours le tableau de list, pour chaque intervenant on calcul la distance parcourue chaque jour
+		//la distance entre le SESSAD et le premier centre de formation ou il doit ce rendre dans la journée
+		//Puis on calcul et additionne la distance entre chacun des centres de formation où il se rends dans la journée
+		//Enfin on additionne la distance entre le dernier centre de formation où il était et le SESSAD
+
+	//On calcul la moyenne et l'écart type des distances parcourues
+
+
+	//On calcul ensuite Fcorr à l'aide d'une double boucle
+	//Pour chaque centre i (i allant de 0 à NBR_FORMATION inclu puisqu'il y a aussi le SESSAD)
+		//i est le centre de départ
+
+		//Pour chaque centre j (j allant de 0 à NBR_FORMATION inclu puisqu'il y a aussi le SESSAD)
+			//On additionne à Fcorr la distance pour aller de i à j
+
+	//On divise Fcorr par 2 car on a compter les trajet ij mais aussi ji
+
+
+	//On calcul la l'evaluation de la solution
+	//fitness = 0.5 ∗ (la moyenne de distance parcoure + ecart type des dstances parcourues) + 0.5 ∗ Fcorr ∗ le nombre de spécilités non respectées
+	
 }
 
 // copie les genes d'un chromosome. la fitness n'est reprise

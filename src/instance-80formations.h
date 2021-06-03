@@ -2,11 +2,12 @@
 
 #include <stdio.h>
                   
-#define NBR_INTERFACES        24
-#define NBR_APPRENANTS        80
-#define NBR_FORMATIONS        80
-#define NBR_CENTRES_FORMATION 5
-#define NBR_SPECIALITES       5
+#define NBR_INTERFACES              24
+#define NBR_APPRENANTS              80
+#define NBR_FORMATIONS_APPRENANT    1
+#define NBR_FORMATIONS              NBR_APPRENANTS*NBR_FORMATIONS_APPRENANT
+#define NBR_CENTRES_FORMATION       5
+#define NBR_SPECIALITES             5
                   
 /* code des compétence en langage des signes et en codage LPC */
 #define COMPETENCE_SIGNES     0
@@ -38,5 +39,5 @@ extern float coord[NBR_CENTRES_FORMATION+1][2];
 #define VENDREDI               5
 #define SAMEDI                 6
                   
-/* formation : id formation, specialite ou centre de formation, competence, horaire debut formation, horaire fin formation */
-extern int formation[NBR_FORMATION][6];
+/* formation : id formation de l'apprenant, specialite = centre de formation, competence, jour, horaire debut formation, horaire fin formation */
+extern int formation[NBR_APPRENANTS][NBR_FORMATIONS_APPRENANT][6];

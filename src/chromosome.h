@@ -24,7 +24,7 @@ public:
     bool interfaceDispo(int idIntervenant, int idFormation); //vérifie la disponibilité d'une interface pour un creaneau de formation
     bool valide(); //vérifie la validité d'une solution
 	void afficher();    // fonction d'affichage du chromosome (i.e. de la solution)
-	void evaluer(int **distance);
+	void evaluer();
 	                    // fonction d'�valuation du chromosome (c-�-d calcul la fitness)
                         //   Elle doit etre lanc�e � la creation des solution et apres
 					    //   l'ex�cution des operateurs de mutation et de croisement

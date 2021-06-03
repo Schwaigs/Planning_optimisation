@@ -33,7 +33,7 @@ chromosome* Ae::optimiser()
 
 	// �valuation des individus de la population initiale
 	for(int ind=0; ind<taille_pop; ind++)
-		//pop->individus[ind]->evaluer(les_distances);
+		pop->individus[ind]->evaluer();
 
 	// on ordonne les indivudus selon leur fitness
 	pop->ordonner();

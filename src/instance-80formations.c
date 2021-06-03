@@ -70,7 +70,7 @@ float coord[NBR_CENTRES_FORMATION+1][2]={
     {102,9} /* ecole formation SPECIALITE_CUISINE */
 };
                   
-/* formation : id formation, specialite ou centre de formation, competence, horaire debut formation, horaire fin formation */
+/* formation : id formation, specialite ou centre de formation, competence, jour de formation,  horaire debut formation, horaire fin formation */
 int formation[NBR_FORMATION][6]={
    {0,SPECIALITE_ELECTRICITE,COMPETENCE_SIGNES,JEUDI,14,19},
    {1,SPECIALITE_MENUISERIE,COMPETENCE_SIGNES,LUNDI,10,12},

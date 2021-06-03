@@ -70,8 +70,8 @@ chromosome* Ae::optimiser()
 			enfant2->echange_2_genes_consecutifs();
 
 		// �valuation des deux nouveaux individus g�n�r�s
-		enfant1->evaluer(/*les_distances*/);
-		enfant2->evaluer(/*les_distances*/);
+		//enfant1->evaluer(/*les_distances*/);
+		//enfant2->evaluer(/*les_distances*/);
 
 		// Insertion des nouveaux individus dans la population
         
@@ -175,8 +175,10 @@ void Ae::test_acces_donnees_instances()
 {	
 	int idApprenant = 5;
 	int idIntervenant = 6;
+	int idCours = 0;
 
-	int specialiteApprenant = formation[idApprenant][1];
+	int specialiteApprenant = formation[idApprenant][idCours][1];
+	cout << "Specialite apprenant = " << specialiteApprenant << endl;
 	bool checkSpecialiteIntervenant = specialite_interfaces[idIntervenant][specialiteApprenant];
 	cout << "L'intervenant possede la bonne Spécialité = " << checkSpecialiteIntervenant << endl;
 

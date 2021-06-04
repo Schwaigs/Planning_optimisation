@@ -54,6 +54,7 @@ int main(int argc, char **argv)
 		exit(EXIT_FAILURE);
 	}
 
+
 	// initialise l'algorithme �volutionniste
 	Ae algo(nb_generation, taille_population, taux_croisement, taux_mutation, taille_chromosome);
 	// arguments du constructeur de l'objet Ae
@@ -64,7 +65,7 @@ int main(int argc, char **argv)
 	//    5. nombre de villes (=taille d'un chromosome)
 
 	// lance l'algorithme �volutionniste
-	chromosome *best = algo.optimiser();
+	//chromosome *best = algo.optimiser();
 
 	// affiche la fitness du meilleur individu trouv�
 	//cout << "La meilleure solution trouvee est : ";

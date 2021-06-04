@@ -33,7 +33,6 @@ chromosome* Ae::optimiser()
 	chromosome *pere;
 	chromosome *mere;
 	int best_fitness;
-    cout << "haaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
     pere->evaluer();
 	// évaluation des individus de la population initiale
 	/*for(int ind=0; ind<taille_pop; ind++)

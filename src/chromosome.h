@@ -1,6 +1,7 @@
 #ifndef CHROMOSOME_H
 #define CHROMOSOME_H
 
+#include <list>
 #include <math.h>
 #include <stdio.h>
 #include <iostream>

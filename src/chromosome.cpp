@@ -264,6 +264,9 @@ void chromosome::evaluer()
         }
 
     }
+    for (auto i = tabList[1].begin(); i!=tabList[1].end(); i++){
+        cout << *i << ",  " << formation[*i][3] << ", " <<  ormation[*i][4] << " " << ormation[*i][5];
+    }
     
 	//Une fois toutes les formations stockés dans l'ordre chronologique
 

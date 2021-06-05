@@ -215,19 +215,19 @@ void chromosome::evaluer()
         if (j == tabList[idIntervenant].end())
         {
             inList=false;
-                for (auto k =tabList[idIntervenant].begin(); k != tabList[idIntervenant].end(); k++ )
+            for (auto k =tabList[idIntervenant].begin(); k != tabList[idIntervenant].end(); k++ )
+            {
+                if (*k==idFormationCourante)
                 {
-                    if (*k==idFormationCourante)
-                    {
-                        //cout << "deja dans liste" << idFormationCourante << " " << *i << " "<<idIntervenant<< "\n";
-                        inList=true;
-                    }
-                    
+                    //cout << "deja dans liste" << idFormationCourante << " " << *i << " "<<idIntervenant<< "\n";
+                    inList=true;
                 }
-                if (!inList)
-                {
-                    tabList[idIntervenant].push_back(idFormationCourante);
-                }
+                
+            }
+            if (!inList)
+            {
+                tabList[idIntervenant].push_back(idFormationCourante);
+            }
                 
         }
         

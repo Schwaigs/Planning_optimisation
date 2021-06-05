@@ -65,7 +65,7 @@ int main(int argc, char **argv)
 	//    5. nombre de formation (=taille d'un chromosome)
 
 	// lance l'algorithme �volutionniste
-	//chromosome *best = algo.optimiser();
+	chromosome *best = algo.optimiser();
 
 	// affiche la fitness du meilleur individu trouv�
 	//cout << "La meilleure solution trouvee est : ";

@@ -33,10 +33,9 @@ chromosome* Ae::optimiser()
 	chromosome *pere;
 	chromosome *mere;
 	int best_fitness;
-    pere->evaluer();
 	// évaluation des individus de la population initiale
-	/*for(int ind=0; ind<taille_pop; ind++)
-		pop->individus[ind]->evaluer();*/
+	for(int ind=0; ind<taille_pop; ind++)
+		pop->individus[ind]->evaluer();
 
 	// on ordonne les indivudus selon leur fitness
 	pop->ordonner();
@@ -73,8 +72,8 @@ chromosome* Ae::optimiser()
 			enfant2->echange_2_genes_consecutifs();
 
 		// �valuation des deux nouveaux individus g�n�r�s
-		//enfant1->evaluer(/*les_distances*/);
-		//enfant2->evaluer(/*les_distances*/);
+		enfant1->evaluer();
+		enfant2->evaluer();
 
 		// Insertion des nouveaux individus dans la population
         

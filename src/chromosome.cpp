@@ -174,25 +174,21 @@ void chromosome::evaluer()
 		//On recupère aussi l'id de l'apprenant ainsi que l'identifiant du cours à partir de l'indice du gene
         idFormationCourante = i;
 
-
 		//On recupère le jour et l'heure de début du créneau horaire (ce sera le créneau courant)
         jourCourant = formation[idFormationCourante][3];
         heureCourante = formation[idFormationCourante][4];
 		//On parcours la list des formations auxquelles l'intervenant est affecté
+         auto j = tabList[idIntervenant].begin();
         
-         
-        
+            bool inList=false;
         if (tabList[idIntervenant].size()==0){
             tabList[idIntervenant].push_back( idFormationCourante);
         }else {
-           // cout << "taille : ";
-            //cout << tabList[idIntervenant].size() << "\n";
-            for(auto j = tabList[idIntervenant].begin() ; j!=tabList[idIntervenant].end(); j++){
-                
-                bool inList=false;
-                for (auto i =tabList[idIntervenant].begin(); i != tabList[idIntervenant].end(); i++ )
+            for( j = tabList[idIntervenant].begin() ; j!=tabList[idIntervenant].end(); j++){
+                inList=false;
+                for (auto k =tabList[idIntervenant].begin(); k != tabList[idIntervenant].end(); k++ )
                 {
-                    if (*i==idFormationCourante)
+                    if (*k==idFormationCourante)
                     {
                         //cout << "deja dans liste" << idFormationCourante << " " << *i << " "<<idIntervenant<< "\n";
                         inList=true;
@@ -203,23 +199,39 @@ void chromosome::evaluer()
                 int idFormation = *j;
                 //cout << "formation" <<*j << "jour" << formation[idFormation][3] << ", heure :"<< formation[idFormation][4] << "\n";
                 //Si le jour est supérieur au jour courant
-                
+
                 if (formation[idFormation][3]>jourCourant && !inList) {
                     //Alors on sauvegarde l'identifiant formé de l'id de l'apprenant ainsi que du numéro du cours 
                     // (même formule que dans la représentation de la solution) dans la list de l'intervenant à cette position
                     tabList[idIntervenant].insert(j, idFormationCourante);
-                    
                 }else if(formation[idFormation][3]==jourCourant && formation[idFormation][4]>heureCourante&& !inList){
-                    
                 //Sinon si le jour est le même on fait la même chose en comparant les horaire pour savoir si le creneau courant est plus tot dans la journée
-                    
                     tabList[idIntervenant].insert(j, idFormationCourante);
                 }
 
                 //Sinon rien (on passe à la prochaine formation stockée dans la list pour la comparer au créneau courant)
-            }
+            }   
+        }
+        if (j == tabList[idIntervenant].end())
+        {
+            inList=false;
+                for (auto k =tabList[idIntervenant].begin(); k != tabList[idIntervenant].end(); k++ )
+                {
+                    if (*k==idFormationCourante)
+                    {
+                        //cout << "deja dans liste" << idFormationCourante << " " << *i << " "<<idIntervenant<< "\n";
+                        inList=true;
+                    }
+                    
+                }
+                if (!inList)
+                {
+                    tabList[idIntervenant].push_back(idFormationCourante);
+                }
+                
         }
         
+        /*
 		//On recupère la spécialite de le formation courante
         speFormationCourante=formation[idFormationCourante][1];
 		//On regarde si l'intervenant possède cette spécialité
@@ -228,28 +240,16 @@ void chromosome::evaluer()
         
 		//Si non on incrémente la variable des specialités non satisfaites
             nbSpecNonRespectees++;
-        }
+        }*/
 
     }
     
-    /*for (int i = 0; i < NBR_INTERFACES; i++)
+   
+cout << "\n";
+    for (auto j = tabList[0].begin(); j != tabList[0].end(); j++)
     {
-        list<int> indexDoublons;
-        for (auto j = tabList[i].begin(); j != tabList[i].end(); j++)
-        {
-            for (auto k = tabList[i].begin(); k != tabList[i].end(); k++)
-            {
-                if (k!=j && *k==*j)
-                {
-                    cout << *k <<" DOUBLON"<<*j <<"\n";
-                }
-                                
-            }
-        }
-        
-    }*/
-
-
+        cout << *j << " jour : " << formation[*j][3] << " heure : " <<  formation[*j][4] << "\n";
+    }
     
 	//Une fois toutes les formations stockés dans l'ordre chronologique
 
@@ -261,29 +261,34 @@ void chromosome::evaluer()
 	//On parcours le tableau de list, pour chaque intervenant on calcule la distance parcourue chaque jour
     for (int idIntervenant=0; idIntervenant <NBR_INTERFACES; idIntervenant++){
         distanceParcourue=0;
-        for (auto j = tabList[idIntervenant].begin() ; j!=tabList[idIntervenant].end(); j++){
-            distanceParcourue = 0;
-            int centre = formation[*j][1];
-            if (j==tabList[idIntervenant].begin())
-            {
-            //la distance entre le SESSAD et le premier centre de formation ou il doit ce rendre dans la journée
-                distanceParcourue += abs(sqrt(pow(coord[centre+1][0] - coord[0][0],2) + pow(coord[centre+1][1] - coord[0][1],2)));
-            }else{
-    
-		        //Puis on calcul et additionne la distance entre chacun des centres de formation où il se rends dans la journée
-                distanceParcourue += abs(sqrt(pow(coord[centre+1][0] - coord[centrePrecedent+1][0],2) + pow(coord[centre+1][1] - coord[centrePrecedent+1][1],2)));       
+        for (int jour = 1; jour<=7; jour++){
+            for (auto j = tabList[idIntervenant].begin() ; j!=tabList[idIntervenant].end(); j++){
+                if (jour == formation[*j][3])
+                {
+                    int centre = formation[*j][1];
+                    if (j==tabList[idIntervenant].begin())
+                    {
+                    //la distance entre le SESSAD et le premier centre de formation ou il doit ce rendre dans la journée
+                        distanceParcourue += abs(sqrt(pow(coord[centre+1][0] - coord[0][0],2) + pow(coord[centre+1][1] - coord[0][1],2)));
+                    }else{
+            
+                        //Puis on calcul et additionne la distance entre chacun des centres de formation où il se rends dans la journée
+                        distanceParcourue += abs(sqrt(pow(coord[centre+1][0] - coord[centrePrecedent+1][0],2) + pow(coord[centre+1][1] - coord[centrePrecedent+1][1],2)));       
+                    }
+                centrePrecedent = centre;
+                }
             }
-            centrePrecedent = centre;
+		    //Enfin on additionne la distance entre le dernier centre de formation où il était et le SESSAD
+            distanceParcourue+=abs(sqrt(pow(coord[0][0] - coord[centrePrecedent+1][0],2) + pow(coord[0][1] - coord[centrePrecedent+1][1],2)));
         }
-		//Enfin on additionne la distance entre le dernier centre de formation où il était et le SESSAD
-        distanceParcourue+=abs(sqrt(pow(coord[0][0] - coord[centrePrecedent+1][0],2) + pow(coord[0][1] - coord[centrePrecedent+1][1],2)));
-        tabDistances[idIntervenant]=distanceParcourue;
+         tabDistances[idIntervenant]=distanceParcourue;
     }
 
 	//On calcul la moyenne et l'écart type des distances parcourues
     float totalDistances =0;
     for(int i =0; i<NBR_INTERFACES; i++){
         totalDistances+=tabDistances[i];
+        cout << tabDistances[i] << "\n";
     }
     float moyenneDistances = totalDistances/NBR_INTERFACES;
     
@@ -305,12 +310,12 @@ void chromosome::evaluer()
             fcorr+= abs(sqrt(pow(coord[i][0] - coord[j][0],2) + pow(coord[i][1] - coord[j][1],2)));
         }
     }
-    fcorr = (fcorr/2)/(NBR_SPECIALITES+1);
+    fcorr = (fcorr/2)/(NBR_FORMATION);
 	//On divise Fcorr par 2 car on a compter les trajet ij mais aussi ji
 
 
 	//On calcul la l'evaluation de la solution
-    cout<< 0.5 <<"*"<< moyenneDistances <<"+"<< ecartTypeDistances<< "+" <<0.5 << "*" <<fcorr <<"*"<< nbSpecNonRespectees;
+    cout<< 0.5 <<"*("<< moyenneDistances <<"+"<< ecartTypeDistances<< ")+" <<0.5 << "*" <<fcorr <<"*"<< nbSpecNonRespectees;
     fitness = 0.5 * (moyenneDistances + ecartTypeDistances) + 0.5 * fcorr * nbSpecNonRespectees;
     cout << "fitness : " << fitness << "\n"; 
 	

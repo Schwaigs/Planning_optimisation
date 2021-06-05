@@ -5,14 +5,11 @@ using namespace std;
 // initialisation d'une population de solutions
 population::population(int tp, int tc)
 {
-    cout<<"debut";
 	taille_pop = tp;
 	individus  = new chromosome*[taille_pop];
 	for (int i=0; i<taille_pop; i++)
 		individus[i] = new chromosome(tc);
 	ordre = new int[taille_pop];
-
-    cout<<"fin";
 }
 
 // destruction de l'objet "population"
@@ -160,7 +157,6 @@ chromosome* population::selection_tournoi()
             chromosomeFitnessMin = individusTires[i];
         }
     }
-    cout << chromosomeFitnessMin->fitness ;
 
     return chromosomeFitnessMin;
 }

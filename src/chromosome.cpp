@@ -24,9 +24,13 @@ chromosome::chromosome(int tc)
 
 	//on parcourt la liste des apprenants pour leur attribuer à chacun une interface
 	for(int i=0; i<taille; i++){
+
+		//on recupère l'identifiant de l'apprenant et le numéro du cours
+		int idApprenant = i / NBR_FORMATIONS_APPRENANT;
+		int idCours = i % NBR_FORMATIONS_APPRENANT;
 		
 		//on stocke les interfaces possedants la bonne competence
-		int competenceApprenant = formation[i][2];
+		int competenceApprenant = formation[idApprenant][idCours][2];
 		list<int> interfaceMatch;
 
 		for(int j=0; j<NBR_INTERFACES; j++){
@@ -39,11 +43,11 @@ chromosome::chromosome(int tc)
 		//on verifie que ces interfaces sont bien disponibles pour ce creneau de formation
 		for(list<int>::iterator it = interfaceMatch.begin(); it != interfaceMatch.end(); it++){
 			int idIntervenant = *it;
-			bool dispo = interfaceDispo(idIntervenant, i);
+			bool dispo = interfaceDispo(idIntervenant, idApprenant, idCours);
 
 			//si l'interface est toujours disponible, on verifie qu'elle ne depassera pas les 35h en lui ajoutant le creneau courant
 			if(dispo){
-				if( (tempsRestantIntervenants[idIntervenant] - (formation[i][5]-formation[i][4])) < 0){
+				if( (tempsRestantIntervenants[idIntervenant] - (formation[idApprenant][idCours][5]-formation[idApprenant][idCours][4])) < 0){
 					dispo = false;
 				}
 			}
@@ -67,7 +71,7 @@ chromosome::chromosome(int tc)
 		genes[i] = *it;
 
 		//on met à jour son nombre d'heure restant
-		tempsRestantIntervenants[genes[i]] -= formation[i][5]-formation[i][4];
+		tempsRestantIntervenants[genes[i]] -= formation[idApprenant][idCours][5]-formation[idApprenant][idCours][4];
 	}
 }
 
@@ -78,24 +82,30 @@ chromosome::~chromosome()
 }
 
 //vérifie la disponibilité d'une interface pour un creaneau de formation
-bool chromosome::interfaceDispo(int idIntervenant, int idFormation){
+bool chromosome::interfaceDispo(int idIntervenant, int idApprenant, int idCours){
 	bool dispo = true; 
 
-	int centreCreneauCourant = formation[idFormation][1];
-	int jCreneauCourant = formation[idFormation][3];
-	int hDebutCreneauCourant = formation[idFormation][4];
-	int hFinCreneauCourant = formation[idFormation][5];
+	int incideCreneauCourant = idApprenant * NBR_FORMATIONS_APPRENANT + idCours;
+	int centreCreneauCourant = formation[idApprenant][idCours][1];
+	int jCreneauCourant = formation[idApprenant][idCours][3];
+	int hDebutCreneauCourant = formation[idApprenant][idCours][4];
+	int hFinCreneauCourant = formation[idApprenant][idCours][5];
 
 	//on parcours la solution pour trouver les creneaux de formation où l'interface est déjà affectée
 	for(int i=0; dispo && i<taille; i++){
+
+		//on recupère l'identifiant de l'apprenant et le numéro du cours où elle est déjà affectée
+		int idApprenantAffecte = i / NBR_FORMATIONS_APPRENANT;
+		int idCoursAffecte = i % NBR_FORMATIONS_APPRENANT;
+
 		//on verfife la compatibilite des horaires
 
 		//si l'interface est deja affectee a une formation ce jour là
-		if(genes[i] != -1 && i != idFormation && genes[i] == idIntervenant && formation[i][3] == jCreneauCourant){
+		if(genes[i] != -1 && i != incideCreneauCourant && genes[i] == idIntervenant && formation[idApprenantAffecte][idCoursAffecte][3] == jCreneauCourant){
 			//on verfife la compatibilite des horaires
-			int centreCreneauAffecte = formation[i][1];
-			int hDebutCreneauAffecte = formation[i][4];
-			int hFinCreneauAffecte = formation[i][5];
+			int centreCreneauAffecte = formation[idApprenantAffecte][idCoursAffecte][1];
+			int hDebutCreneauAffecte = formation[idApprenantAffecte][idCoursAffecte][4];
+			int hFinCreneauAffecte = formation[idApprenantAffecte][idCoursAffecte][5];
 
 			if((hFinCreneauAffecte > hDebutCreneauCourant) && (hDebutCreneauAffecte < hFinCreneauCourant)){
 				dispo = false;
@@ -123,13 +133,16 @@ bool chromosome::valide(){
 	for(int i=0; valide && i<taille; i++){
 
 		int idIntervenant = genes[i];
+		//on recupère l'identifiant de l'apprenant et le numéro du cours
+		int idApprenant = i / NBR_FORMATIONS_APPRENANT;
+		int idCours = i % NBR_FORMATIONS_APPRENANT;
 
 		//l'intervenant doit posseder la bonne compétence
-		int competenceApprenant = formation[i][2];
+		int competenceApprenant = formation[idApprenant][idCours][2];
 		valide  = competences_interfaces[idIntervenant][competenceApprenant];
 
 		//l'intervenant doit être disponible sur le creneau horaire de la formation
-		valide = valide && interfaceDispo(idIntervenant, i);
+		valide = valide && interfaceDispo(idIntervenant, idApprenant, idCours);
 
 		//l'intervenant ne doit pas depasser les 35h
 		valide = valide && (tempsRestantIntervenants[idIntervenant] >= 0);
@@ -329,6 +342,26 @@ void chromosome::copier(chromosome* source)
 		genes[i] = source->genes[i];
 }
 
+//met à jour le tableau de temps de travail des interface suite à un changement dans les genes
+void chromosome::majTempsTravailInterface(){
+
+	//Au depart chacune des interface est encore plainement disponible, elle a donc 35h restantes
+	for(int i=0; i<NBR_INTERFACES; i++){
+		tempsRestantIntervenants[i] = 35;
+	}
+
+	//on parcourt la liste des formations auxquelles les interfaces sont affectées
+	for(int i=0; i<taille; i++){
+
+		//on recupère l'identifiant de l'apprenant et le numéro du cours
+		int idApprenant = i / NBR_FORMATIONS_APPRENANT;
+		int idCours = i % NBR_FORMATIONS_APPRENANT;
+
+		//on met à jour le nombre d'heure restant de l'interface
+		tempsRestantIntervenants[genes[i]] -= formation[idApprenant][idCours][5]-formation[idApprenant][idCours][4];
+	}
+}
+
 // on �change les 2 g�nes
 void chromosome::echange_2_genes(int gene1, int gene2)
 {
@@ -367,7 +400,6 @@ void chromosome::echange_2_genes_quelconques()
 
 void chromosome::deplacement_1_gene()
 {
-    int debut, fin;
 	//on selection un gene et une position aleatoirement
 	int i = Random::aleatoire(taille);
 	int pos = Random::aleatoire(taille);
@@ -375,6 +407,8 @@ void chromosome::deplacement_1_gene()
 	while (i==pos){
 		pos = Random::aleatoire(taille);
 	}
+	
+    int debut, fin;
 
 	//puis on insert le gene en décalant les genes qui se trouvent entre l'ancienne et la nouvelle position
 	if (pos < i) {

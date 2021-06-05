@@ -25,10 +25,10 @@ int main(int argc, char **argv)
 
 	// valeurs par defaut
 	int nb_generation     = 50;
-	int taille_population = NBR_APPRENANTS * 2;
+	int taille_population = NBR_FORMATIONS * 2;
 	float taux_croisement = 0.8;
 	float taux_mutation   = 0.5;
-	int taille_chromosome = NBR_APPRENANTS;
+	int taille_chromosome = NBR_FORMATIONS;
 
 	if (argc == 6)
 	{
@@ -50,7 +50,7 @@ int main(int argc, char **argv)
 		cout << "   2. taille de la population (entier > 0)" << endl;
 		cout << "   3. taux de croisement (0 <= reel <= 1)" << endl;
 		cout << "   4. taux de mutation (0 <= reel <= 1)" << endl;
-		cout << "   5. nombre de villes (=taille d'un chromosome)" << endl;
+		cout << "   5. nombre de formation (=taille d'un chromosome)" << endl;
 		exit(EXIT_FAILURE);
 	}
 
@@ -62,7 +62,7 @@ int main(int argc, char **argv)
 	//    2. taille de la population (entier > 0)
 	//    3. taux de croisement (0 <= reel <= 1)
 	//    4. taux de mutation (0 <= reel <= 1)
-	//    5. nombre de villes (=taille d'un chromosome)
+	//    5. nombre de formation (=taille d'un chromosome)
 
 	// lance l'algorithme �volutionniste
 	//chromosome *best = algo.optimiser();

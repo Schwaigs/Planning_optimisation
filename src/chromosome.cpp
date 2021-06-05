@@ -166,6 +166,26 @@ void chromosome::copier(chromosome* source)
 		genes[i] = source->genes[i];
 }
 
+//met à jour le tableau de temps de travail des interface suite à un changement dans les genes
+void chromosome::majTempsTravailInterface(){
+
+	//Au depart chacune des interface est encore plainement disponible, elle a donc 35h restantes
+	for(int i=0; i<NBR_INTERFACES; i++){
+		tempsRestantIntervenants[i] = 35;
+	}
+
+	//on parcourt la liste des formations auxquelles les interfaces sont affectées
+	for(int i=0; i<taille; i++){
+
+		//on recupère l'identifiant de l'apprenant et le numéro du cours
+		int idApprenant = i / NBR_FORMATIONS_APPRENANT;
+		int idCours = i % NBR_FORMATIONS_APPRENANT;
+
+		//on met à jour le nombre d'heure restant de l'interface
+		tempsRestantIntervenants[genes[i]] -= formation[idApprenant][idCours][5]-formation[idApprenant][idCours][4];
+	}
+}
+
 // on �change les 2 g�nes
 void chromosome::echange_2_genes(int gene1, int gene2)
 {

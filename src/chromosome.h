@@ -30,6 +30,7 @@ public:
 					    //   l'ex�cution des operateurs de mutation et de croisement
     void copier(chromosome* source);  // copie le chromosome 'source'
     bool identique(chromosome* chro); // test si 2 chromosome sont identique
+    void majTempsTravailInterface(); //met à jour le tableau de temps de travail des interface suite à un changement dans les genes
 
     // OPERATEURS DE MUTATION
     void echange_2_genes(int gene1,     // interchange 2 g�nes du chromosome

@@ -21,7 +21,7 @@ population::~population()
 	delete ordre;
 }
 
-// statistiques sur la population
+// statistiques sur la population VERIFIER
 void population::statiatiques()
 {
 	double moyenne    = 0;
@@ -43,7 +43,7 @@ void population::statiatiques()
 	     << individus[ordre[taille_pop-1]]->fitness << "]" << endl;
 }
 
-// Similitude de la population
+// Similitude de la population VERIFIER
 void population::similitude()
 {
 	int nb_ind_id_1, nb_ind_id_2, nb_ind_id_3;
@@ -71,7 +71,7 @@ int population::nb_chromosomes_similaires(chromosome* chro)
 	return nb;
 }
 
-// Oronne les individus de la population par ordre croissant de fitness
+// Ordonne les individus de la population par ordre croissant de fitness VERIFIER
 void population::ordonner()
 {
 	int inter;
@@ -103,35 +103,6 @@ void population::reordonner()
 			}
 }
 
-// SELECTION PAR ROULETTE BIAISEE
-//op�rateur de s�lection bas� sur la fonction fitness
-chromosome* population::selection_roulette()
-{
-	int somme_fitness = individus[0]->fitness;
-	int fitness_max   = individus[0]->fitness;
-	int somme_portion;
-
-	for(int i=1; i<taille_pop; i++)
-	{
-		somme_fitness += individus[i]->fitness;
-		if (fitness_max < individus[i]->fitness)
-			fitness_max = individus[i]->fitness;
-	}
-	somme_portion = fitness_max*taille_pop - somme_fitness;
-
-	double variable_alea = Random::aleatoire(1000)/1000.0;
-
-	int ind = 0;
-	double portion = (fitness_max - individus[0]->fitness)*1./somme_portion;
-	while ((ind<taille_pop-1) && (variable_alea>=portion))
-	{
-		ind++;
-		portion += (fitness_max - individus[ind]->fitness)*1./somme_portion;
-	}
-	return individus[ind];
-}
-
-
 // SELECTION PAR TOURNOI
 //op�rateur de s�lection bas� sur la fonction fitness
 chromosome* population::selection_tournoi()
@@ -141,13 +112,12 @@ chromosome* population::selection_tournoi()
     int index_indiv; //index de l'individu tiré
     chromosome* individusTires[n];
     //tirage de n individus
-    
+
     for(int i = 0; i<n; i++){
         do
         {
             index_indiv = (rand()%taille_pop-2)+1;
         } while (index_indiv==-1 && in_list(index_indiv, individusTires, n));
-        //cout << "index " << i << " : " <<  index_indiv << "\n";
         individusTires[i] = individus[index_indiv];
     }
     chromosomeFitnessMin = individusTires[0];
@@ -173,133 +143,28 @@ int population::in_list(int index, chromosome** individusTires, int taille){
     return 0;
 }
 
-// op�rateur de remplacement bas� sur la roulette biais�e d'un individu de la population
-//   par un nouveau individu donn� en argument
-void population::remplacement_roulette(chromosome* individu)
-{
-	int somme_fitness = individus[0]->fitness;
-	for(int i=1; i<taille_pop; i++)
-		somme_fitness += individus[i]->fitness;
-
-	double variable_alea;
-	int ind = ordre[0];
-	double portion;
-
-	while (ordre[0]==ind)
-	{
-		variable_alea = Random::aleatoire(1000)/1000.0;
-		ind = 0;
-		portion = individus[0]->fitness*1./somme_fitness;
-		while ((ind<taille_pop-1) && (variable_alea>portion))
-		{
-			ind++;
-			portion += individus[ind]->fitness*1./somme_fitness;
-		}
-	}
-	individus[ind]->copier(individu);
-	individus[ind]->fitness = individu->fitness;
-}
-
 void population::remplacement_tournoi(chromosome* individu){
     int n = taille_pop/10; //nombre d'individus tirés
 	chromosome* chromosomeFitnessMax;
     int index_indiv; //index de l'individu tiré
     int index_max=-1;
     chromosome* individusTires[n];
-    
+
     //tirage de n individus
     for(int i = 0; i<n; i++){
         do
         {
             index_indiv = (rand()%taille_pop-2)+1;
         } while (index_indiv==-1 && in_list(index_indiv, individusTires, n));
-        //cout << "index " << i << " : " <<  index_indiv << "\n";
         if (index_max==-1)
         {
             index_max=index_indiv;
         }else if(individus[index_max]->fitness<individus[index_indiv]->fitness){
             index_max = index_indiv;
         }
-        //cout << "fitness max : " << individus[index_max]->fitness << "courant : "<<individus[index_indiv]->fitness <<"\n";
     }
 
 	individus[index_max]->copier(individu);
 	individus[index_max]->fitness = individu->fitness;
-}
-
-// SELECTION ALEATOIRE
-//op�rateur de s�lection al�atoire
-chromosome* population::selection_aleatoire()
-{
-	int ind_alea = Random::aleatoire(taille_pop);
-	return individus[ind_alea];
-}
-
-// op�rateur de remplacement al�toire d'un individu de la population
-//   par un nouveau individu donn� en argument
-void population::remplacement_aleatoire(chromosome* individu)
-{
-	int ind_alea = Random::aleatoire(taille_pop);
-	individus[ind_alea]->copier(individu);
-	individus[ind_alea]->fitness = individu->fitness;
-}
-
-// SELECTION PAR RANKING
-// op�rateur de s�lection bas� sur le ranking, les individus de la
-//   population sont ordonn�s de fa�on � ce que le meilleur est le rang 0
-//   le taux de ranking permet de r�gler la pr�ssion de s�lection :
-//   0 forte pression et +INFINI faible pression (probabilite = 1/nb qlq soit l'individu)
-chromosome* population::selection_ranking(float taux_ranking)
-{
-	reordonner();
-
-	double variable_aleatoire = Random::aleatoire(10000)/10000.0;
-	int nb = taille_pop;
-	int i = 0;
-	taux_ranking = taux_ranking/100;
-
-	double portion = ((double(nb-i)*2.0/double(nb*(nb+1)))+taux_ranking)/(1.0+nb*taux_ranking);
-
-	while(variable_aleatoire>portion)
-	{
-		i++;
-		portion += ((double(nb-i)*2.0/double(nb*(nb+1)))+taux_ranking)/(1.0+nb*taux_ranking);
-	}
-
-	if(i>=nb)
-		i = Random::aleatoire(nb);
-	return individus[ordre[i]];
-}
-
-// op�rateur de remplacement bas� sur le ranking d'un individu de la population
-//   par un nouveau individu donn� en argument
-void population::remplacement_ranking(chromosome*individu, float taux_ranking)
-{
-	double variable_aleatoire = Random::aleatoire(10000)/10000.0;
-	int T = taille_pop;
-	int i = 0;
-	taux_ranking   = taux_ranking/100;
-	double portion = ((double(i)*2.0/double(T*(T-1)))+taux_ranking)/(1.0+T*taux_ranking);
-
-	while(variable_aleatoire>portion)
-	{
-		i++;
-		portion += ((double(i)*2.0/double(T*(T-1)))+taux_ranking)/(1.0+T*taux_ranking);
-	}
-	if(i>=T)
-		i = Random::aleatoire(T);
-	int ind = ordre[i];
-	individus[ind]->copier(individu);
-	individus[ind]->fitness = individu->fitness;
-}
-
-// affichage de la population, de son rang et de sa fitness
-void population::afficher()
-{
-	cout << "Poputalion de " << taille_pop << " individus :" << endl;
-	for (int i=0; i<taille_pop; i++)
-	{
-		cout << "individu " << i << ", rang : " << ordre[i] << " ";
-		individus[i]->afficher();
-	}
+	individus[index_max]->majTempsTravailInterface();
 }

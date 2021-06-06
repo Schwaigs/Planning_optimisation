@@ -15,7 +15,6 @@ using namespace std;
 class Ae{
 public:
     // ATTRIBUTS
-	int nbgenerations;       // nombre de g�n�rations apr�s quoi la recherche est arr�t�e
 	int taille_pop;          // nombre d'individus dans la population
 	double taux_croisement;  // taux de croisement : valeur entre 0 et 1
 	double taux_mutation;    // taux de mutation : valeur entre 0 et 1
@@ -23,12 +22,11 @@ public:
 	population *pop;         // liste des individus de la population
 
 	// CONSTRUCTEURS
-	Ae(int nbg, int tp, double tcroisement, double tmutation, int tc);
+	Ae(int tp, double tcroisement, double tmutation, int tc);
                              // constructeur de l'objet Algaorithme evolutioniste
 	~Ae();                   // destructeur de l'objet Ae
 
 	// METHODES
-	void test_acces_donnees_instances();
                              // constuie la matrice des distances
 	chromosome* optimiser(); // fonction principale qui d�cit le d�roulement de l'algorithme �volusionniste
 	void sort(int* tab, int size);
@@ -40,15 +38,6 @@ public:
 	// opérateur de croisement NX de deux chromosomes
 	void croisementNX(chromosome* parent1, chromosome* parent2,
 													chromosome* enfant1, chromosome* enfant2, int croisementN);
-	// op�rateur de croisement 1X de deux chromosomes
-    void croisement1X(chromosome* parent1, chromosome* parent2,
-                      chromosome* enfant1, chromosome* enfant2);
-	// op�rateur de croisement 1X de deux chromosomes
-    void croisement2X(chromosome* parent1, chromosome* parent2,
-                      chromosome* enfant1, chromosome* enfant2);
-	// op�rateur de croisement 2LOX de deux chromosomes
-    void croisement2LOX(chromosome* parent1, chromosome* parent2,
-                        chromosome* enfant_s1, chromosome* enfant_s2);
 };
 
 # endif

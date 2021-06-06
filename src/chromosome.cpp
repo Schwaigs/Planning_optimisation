@@ -79,6 +79,7 @@ chromosome::chromosome(int tc)
 chromosome::~chromosome()
 {
 	delete genes;
+  delete tempsRestantIntervenants;
 }
 
 //vérifie la disponibilité d'une interface pour un creaneau de formation
@@ -330,12 +331,11 @@ void chromosome::evaluer()
 }
 
 
-// copie les genes d'un chromosome. la fitness n'est reprise
+// copie les genes d'un chromosome. la fitness n'est pas reprise
 void chromosome::copier(chromosome* source)
 {
 	for(int i=0; i<taille; i++)
 		genes[i] = source->genes[i];
-	//copier tempsRestantIntervenants ?
 }
 
 void chromosome::shuffle(int *array, size_t n) {
@@ -356,7 +356,6 @@ void chromosome::melange_alea_genes() {
 	int arrive;
 	int direction = Random::aleatoire(2);
 	int distance = Random::aleatoire_min_max(3, 6);
-	//cout << "depart : " << depart << " - direction : " << direction << " - distance : " << distance << endl;
 
 	if(direction == 0) {
 		int tmp = depart;
@@ -385,11 +384,6 @@ void chromosome::melange_alea_genes() {
 		tab[cpt] = genes[i];
 		cpt++;
 	}
-	// cout << "[ ";
-	// for(int i = 0; i < distance; i++) {
-	// 	cout << tab[i] << ", ";
-	// }
-	// cout << "]" << endl;
 	shuffle(tab, distance);
 	cpt = 0;
 	for(int i = depart; i < arrive; i++) {
@@ -419,88 +413,6 @@ void chromosome::majTempsTravailInterface(){
 	}
 }
 
-// on �change les 2 g�nes
-void chromosome::echange_2_genes(int gene1, int gene2)
-{
-	int inter    = genes[gene1];
-	genes[gene1] = genes[gene2];
-	genes[gene2] = inter;
-}
-
-void chromosome::echange_2_genes_consecutifs()
-{
-	// on s�l�ctionne un g�ne al�atoirement entre premier et l'avant dernier.
-	// Rappel : Random::aleatoire(taille-1) retourne un entier al�atoire compris entre 0 et taille-2
-	int i = Random::aleatoire(taille-1);
-
-	// on �change le g�ne s�l�ctionn� al�atoirement avec le g�ne le succ�dant
-	echange_2_genes(i, i+1);
-
-	//ordonner();
-}
-
-void chromosome::echange_2_genes_quelconques()
-{
-	//on selectionne deux genes aleatoirement entre le premier et le dernier gene du chromosome
-	int i = Random::aleatoire(taille);
-	int j = Random::aleatoire(taille);
-	//on s'assure qu'il s'agit bien de deux genes differents
-	while (i==j){
-		j = Random::aleatoire(taille);
-	}
-
-	//puis on echange les deux genes
-	echange_2_genes(i, j);
-
-	//ordonner();
-}
-
-void chromosome::deplacement_1_gene()
-{
-	//on selection un gene et une position aleatoirement
-	int i = Random::aleatoire(taille);
-	int pos = Random::aleatoire(taille);
-	//on s'assure que la position n'est pas celle du gene que l'on doit deplacer
-	while (i==pos){
-		pos = Random::aleatoire(taille);
-	}
-
-    int debut, fin;
-
-	//puis on insert le gene en décalant les genes qui se trouvent entre l'ancienne et la nouvelle position
-	if (pos < i) {
-		debut = pos;
-		fin = i;
-
-		int geneI = genes[i];
-		int geneD = genes[debut];
-		genes[debut] = geneI;
-		for(int j = debut; j <= fin; j++){
-			int tmp = genes[j];
-			genes[j] = genes[i];
-			geneI = tmp;
-		}
-	}
-	else{
-		debut = i;
-		fin = pos;
-
-		int geneI = genes[i];
-		for(int j = debut; j < fin; j++){
-			genes[j] = genes[j+1];
-		}
-		genes[fin] = geneI;
-	}
-
-
-
-
-}
-
-void chromosome::inversion_sequence_genes()
-{
-}
-
 // affichage des param�tre d'un chromosome
 void chromosome::afficher()
 {
@@ -508,7 +420,7 @@ void chromosome::afficher()
 	for(int i=1;i<taille;i++)
 		cout << "-" << genes[i];
 	cout << "" << endl;
-	//cout << " => fitness = " << fitness << endl;
+	cout << " => fitness = " << fitness << endl;
 }
 
 bool chromosome::identique(chromosome* chro)

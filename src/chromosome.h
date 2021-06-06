@@ -16,7 +16,7 @@ public:
 	int *genes;         // les g�nes du chromosome/solution
 	int taille;         // la taille du chromosome = nombre de g�nes
 	int fitness;        // la valeur de la fonction objectif (fitness) de la solution
-    int *tempsRestantIntervenants; //le temps de travail encore disponible pour chaque interface
+  int *tempsRestantIntervenants; //le temps de travail encore disponible pour chaque interface
 
 	// CONSTRUCTEURS
 	chromosome(int tc); // constructeur de l'objet al�atoirement
@@ -37,12 +37,6 @@ public:
 
     // OPERATEURS DE MUTATION
 		void melange_alea_genes();
-    void echange_2_genes(int gene1,     // interchange 2 g�nes du chromosome
-                         int gene2);
-    void echange_2_genes_consecutifs(); // interchange 2 g�nes cons�cutifs du chromosome
-    void echange_2_genes_quelconques(); // interchange al�atoirement 2 g�nes du chromosome
-    void deplacement_1_gene();          // d�place un g�ne dans le chromosome
-    void inversion_sequence_genes();    // inverse une s�quence de g�nes du chromosome
 };
 
 # endif

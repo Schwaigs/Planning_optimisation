@@ -21,8 +21,8 @@ population::~population()
 	delete ordre;
 }
 
-// statistiques sur la population VERIFIER
-void population::statiatiques()
+// statistiques sur la population
+void population::statistiques()
 {
 	double moyenne    = 0;
 	double ecart_type = 0;
@@ -43,35 +43,7 @@ void population::statiatiques()
 	     << individus[ordre[taille_pop-1]]->fitness << "]" << endl;
 }
 
-// Similitude de la population VERIFIER
-void population::similitude()
-{
-	int nb_ind_id_1, nb_ind_id_2, nb_ind_id_3;
-	nb_ind_id_1 = nb_chromosomes_similaires(individus[ordre[0]]);
-	cout << "Nombre d'indivudus de la population identique ayant la fitness = " << individus[ordre[0]]->fitness << " : " << nb_ind_id_1 << " / " << taille_pop << endl;
-	if (nb_ind_id_1<taille_pop)
-	{
-		nb_ind_id_2 = nb_chromosomes_similaires(individus[ordre[nb_ind_id_1]]);
-		cout << "Nombre d'indivudus de la population identique ayant la fitness = " << individus[ordre[nb_ind_id_1]]->fitness << " : " << nb_ind_id_2 << " / " << taille_pop << endl;
-		if (nb_ind_id_1+nb_ind_id_2<taille_pop)
-		{
-			nb_ind_id_3 = nb_chromosomes_similaires(individus[ordre[nb_ind_id_1+nb_ind_id_2]]);
-			cout << "Nombre d'indivudus de la population identique ayant la fitness = " << individus[ordre[nb_ind_id_1+nb_ind_id_2]]->fitness << " : " << nb_ind_id_3 << " / " << taille_pop << endl;
-		}
-	}
-}
-
-// compte le nombre de chromosomes similaires
-int population::nb_chromosomes_similaires(chromosome* chro)
-{
-	int nb = 0;
-	for (int i=0; i<taille_pop; i++)
-		if (chro->identique(individus[i]))
-			nb++;
-	return nb;
-}
-
-// Ordonne les individus de la population par ordre croissant de fitness VERIFIER
+// Ordonne les individus de la population par ordre croissant de fitness
 void population::ordonner()
 {
 	int inter;

@@ -5,7 +5,7 @@
 #include "ae.h"
 #include "chromosome.h"
 #include "random.h"
-#include "instance-80formations.h"
+#include "instancesFormations/instance-80formations_5.h"
 
 using namespace std;
 
@@ -70,5 +70,5 @@ int main(int argc, char **argv)
 
 	//affiche la fitness du meilleur individu trouvé
 	cout << "La meilleure solution trouvee est : ";
-  best->afficher();
+	best->afficher();
 }

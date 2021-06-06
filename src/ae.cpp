@@ -11,10 +11,7 @@ Ae::Ae(int tp, double tcroisement, double tmutation, int tc)
 	taux_croisement   = tcroisement;
 	taux_mutation     = tmutation;
 	taille_chromosome = tc;
-
 	pop   = new population(taille_pop, taille_chromosome);
-
-  //pop->individus[0]->evaluer(); VERIFIER
 }
 
 // destructeur de l'objet Ae
@@ -42,7 +39,7 @@ chromosome* Ae::optimiser()
 	best_fitness = pop->individus[pop->ordre[0]]->fitness;
 	//  on affiche les statistiques de la population initiale
 	cout << "Quelques statistiques sur la population initiale" << endl;
-	pop->statiatiques();
+	pop->statistiques();
 
 	unsigned long time_limit = 1 * 60 * 1000; //temps limite en millisecondes
 	unsigned long time = 0; //temps courant en millisecondes
@@ -137,9 +134,7 @@ chromosome* Ae::optimiser()
 	}
 	//  on affiche les statistiques de la population finale
 	cout << "Quelques statistiques sur la population finale" << endl;
-	pop->statiatiques();
-	//  on affiche la consanginité de la population finale
-	pop->similitude();
+	pop->statistiques();
 
 	//retourner le meilleur individu rencontré pendant la recherche
 	return pop->individus[pop->ordre[0]];
@@ -148,14 +143,14 @@ chromosome* Ae::optimiser()
 void Ae::sort(int* tab, int size) {
 	for(int i = 0; i < size; i++) {
 		int min = tab[i];
-    int indice = i;
+    	int indice = i;
 		for(int j = i+1; j < size; j++) {
 			if(tab[j] < min) {
 				min = tab[j];
-        indice = j;
+        		indice = j;
 			}
 		}
-    tab[indice] = tab[i];
+    	tab[indice] = tab[i];
 		tab[i] = min;
 	}
 }

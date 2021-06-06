@@ -17,14 +17,10 @@ public:
 
 	// CONSTRUCTEURS
 	population(int tp, int tc); // constructeur de l'objet
-	~population();              // destructeur de l'objet
+	~population(); // destructeur de l'objet
 
 	// METHODES
-	void statiatiques(); // affiche quelques statistiques sur la population
-	int nb_chromosomes_similaires(chromosome* chro);
-	                     // compte le nombre de chromosomes similaires � 'chro'
-	void similitude();   // affiche les r�sultats du comptage de chromosomes similaires
-	                     // aux meilleurs individus de la population.
+	void statistiques(); // affiche quelques statistiques sur la population
 
     // OPERATEURS DE SELECTION ET DE REMPLACEMENT
     chromosome *selection_tournoi();

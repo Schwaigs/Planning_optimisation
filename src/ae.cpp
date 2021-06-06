@@ -62,6 +62,7 @@ chromosome* Ae::optimiser()
 		{
 			bool solution_valide = false;
 			while(!solution_valide || !stop_temps) {
+				cout << "croisement" << endl;
 				croisementDoubleNX(pere, mere, enfant1, enfant2);
 				enfant1->majTempsTravailInterface();
 				enfant2->majTempsTravailInterface();

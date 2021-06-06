@@ -62,6 +62,6 @@ int main(int argc, char **argv)
 	// lance l'algorithme �volutionniste
 	chromosome *best = algo.optimiser();
 
-	delete best;
+	//delete best;
 
 }

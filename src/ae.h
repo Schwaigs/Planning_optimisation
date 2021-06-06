@@ -22,12 +22,10 @@ public:
 	population *pop;         // liste des individus de la population
 
 	// CONSTRUCTEURS
-	Ae(int tp, double tcroisement, double tmutation, int tc);
-                             // constructeur de l'objet Algaorithme evolutioniste
-	~Ae();                   // destructeur de l'objet Ae
+	Ae(int tp, double tcroisement, double tmutation, int tc);// constructeur de l'objet Algaorithme evolutioniste
+	~Ae(); // destructeur de l'objet Ae
 
 	// METHODES
-                             // constuie la matrice des distances
 	chromosome* optimiser(); // fonction principale qui d�cit le d�roulement de l'algorithme �volusionniste
 	void sort(int* tab, int size);
 	bool isInArray(int value, int* tab, int size);

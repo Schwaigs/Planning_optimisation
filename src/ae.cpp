@@ -132,14 +132,14 @@ chromosome* Ae::optimiser()
 void Ae::sort(int* tab, int size) {
 	for(int i = 0; i < size; i++) {
 		int min = tab[i];
-    int indice = i;
+    	int indice = i;
 		for(int j = i+1; j < size; j++) {
 			if(tab[j] < min) {
 				min = tab[j];
-        indice = j;
+        		indice = j;
 			}
 		}
-    tab[indice] = tab[i];
+    	tab[indice] = tab[i];
 		tab[i] = min;
 	}
 }

@@ -79,11 +79,12 @@ chromosome::chromosome(int tc)
 chromosome::~chromosome()
 {
 	delete genes;
-  delete tempsRestantIntervenants;
+	delete tempsRestantIntervenants;
 }
 
 //vérifie la disponibilité d'une interface pour un creaneau de formation
 bool chromosome::interfaceDispo(int idIntervenant, int idApprenant, int idCours){
+
 	bool dispo = true;
 
 	int incideCreneauCourant = idApprenant * NBR_FORMATIONS_APPRENANT + idCours;
@@ -155,10 +156,8 @@ bool chromosome::valide(){
 // �valuation d'une solution : fonction qui calcule la fitness d'une solution
 void chromosome::evaluer()
 {
-
 	//On créer un tableau de list
     list<int> tabList[NBR_INTERFACES];
-
 
 	//l'indice du tableau est égal à l'identifant de l'intervenant
 	//la list correspond aux différentes formations (dans l'ordre chronologiques de la semaine) auxquelles sont affectés les intervenants
@@ -170,8 +169,6 @@ void chromosome::evaluer()
     int jourCourant, heureCourante;
     int jourCours, heureCours;
     int speFormationCourante;
-
-    //ancienne version : id apprenant = idformation
 
     //On parcours les genes du chromosomes, donc les différents créneaux de formations
 
@@ -186,9 +183,9 @@ void chromosome::evaluer()
         jourCourant = formation[idApprenantCourant][idFormationCourante][3];
         heureCourante = formation[idApprenantCourant][idFormationCourante][4];
 		//On parcours la list des formations auxquelles l'intervenant est affecté
-         auto j = tabList[idIntervenant].begin();
+        auto j = tabList[idIntervenant].begin();
 
-            bool inList=false;
+        bool inList=false;
         if (tabList[idIntervenant].size()==0){
             tabList[idIntervenant].push_back(idApprenantCourant*NBR_FORMATIONS_APPRENANT + idFormationCourante);
         }else {
@@ -198,7 +195,6 @@ void chromosome::evaluer()
                 {
                     if (*k%NBR_FORMATIONS_APPRENANT==idFormationCourante)
                     {
-                        //cout << "deja dans liste" << idFormationCourante << " " << *i << " "<<idIntervenant<< "\n";
                         inList=true;
                     }
 
@@ -206,9 +202,8 @@ void chromosome::evaluer()
                 //Pour chaque formation on recupère son jour et son heure de début pour les comparer à ceux du créneau courant
                 int idFormation = *j%NBR_FORMATIONS_APPRENANT;
                 int idApprenant = *j/NBR_FORMATIONS_APPRENANT;
-                //cout << "formation" <<*j << "jour" << formation[idFormation][3] << ", heure :"<< formation[idFormation][4] << "\n";
-                //Si le jour est supérieur au jour courant
 
+                //Si le jour est supérieur au jour courant
                 if (formation[idApprenant][idFormation][3]>jourCourant && !inList) {
                     //Alors on sauvegarde l'identifiant formé de l'id de l'apprenant ainsi que du numéro du cours
                     // (même formule que dans la représentation de la solution) dans la list de l'intervenant à cette position
@@ -228,7 +223,6 @@ void chromosome::evaluer()
             {
                 if (*k%NBR_FORMATIONS_APPRENANT==idFormationCourante)
                 {
-                    //cout << "deja dans liste" << idFormationCourante << " " << *i << " "<<idIntervenant<< "\n";
                     inList=true;
                 }
 
@@ -251,12 +245,6 @@ void chromosome::evaluer()
             nbSpecNonRespectees++;
         }
 
-    }
-
-
-    for (auto j = tabList[0].begin(); j != tabList[0].end(); j++)
-    {
-        //cout << *j << " jour : " << formation[*j/NBR_FORMATIONS_APPRENANT][*j%NBR_FORMATIONS_APPRENANT][3] << " heure : " <<  formation[*j/NBR_FORMATIONS_APPRENANT][*j%NBR_FORMATIONS_APPRENANT][4] << "\n";
     }
 
 	//Une fois toutes les formations stockés dans l'ordre chronologique
@@ -298,7 +286,6 @@ void chromosome::evaluer()
     float totalDistances =0;
     for(int i =0; i<NBR_INTERFACES; i++){
         totalDistances+=tabDistances[i];
-        //cout << tabDistances[i] << "\n";
     }
     float moyenneDistances = totalDistances/NBR_INTERFACES;
 
@@ -324,10 +311,8 @@ void chromosome::evaluer()
 	//On divise Fcorr par 2 car on a compter les trajet ij mais aussi ji
 
 
-	//On calcul la l'evaluation de la solution
-    //cout<< 0.5 <<"*("<< moyenneDistances <<"+"<< ecartTypeDistances<< ")+" <<0.5 << "*" <<fcorr <<"*"<< nbSpecNonRespectees;
+	//On calcul l'evaluation de la solution
     fitness = 0.5 * (moyenneDistances + ecartTypeDistances) + 0.5 * fcorr * nbSpecNonRespectees;
-    //cout << "fitness : " << fitness << "\n";
 }
 
 
@@ -340,15 +325,15 @@ void chromosome::copier(chromosome* source)
 
 void chromosome::shuffle(int *array, size_t n) {
 	if (n > 1) {
-    size_t i;
-    for (i = 0; i < n - 1; i++)
-    {
-      size_t j = i + rand() / (RAND_MAX / (n - i) + 1);
-      int t = array[j];
-      array[j] = array[i];
-      array[i] = t;
-    }
-  }
+		size_t i;
+		for (i = 0; i < n - 1; i++)
+		{
+			size_t j = i + rand() / (RAND_MAX / (n - i) + 1);
+			int t = array[j];
+			array[j] = array[i];
+			array[i] = t;
+		}
+  	}
 }
 
 void chromosome::melange_alea_genes() {

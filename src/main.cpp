@@ -61,12 +61,6 @@ int main(int argc, char **argv)
 
 	// lance l'algorithme �volutionniste
 	chromosome *best = algo.optimiser();
-	if(best->valide()) {
-		cout << "best solution valide" << endl;
-	}
-	else {
-		cout << "pas valide" << endl;
-	}
 
 	//affiche la fitness du meilleur individu trouvé
 	cout << "La meilleure solution trouvee est : ";

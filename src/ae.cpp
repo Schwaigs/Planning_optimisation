@@ -11,10 +11,7 @@ Ae::Ae(int tp, double tcroisement, double tmutation, int tc)
 	taux_croisement   = tcroisement;
 	taux_mutation     = tmutation;
 	taille_chromosome = tc;
-
 	pop   = new population(taille_pop, taille_chromosome);
-
-  //pop->individus[0]->evaluer(); VERIFIER
 }
 
 // destructeur de l'objet Ae
@@ -122,8 +119,6 @@ chromosome* Ae::optimiser()
 	//  on affiche les statistiques de la population finale
 	cout << "Quelques statistiques sur la population finale" << endl;
 	pop->statistiques();
-	//  on affiche la consanginité de la population finale
-	pop->similitude();
 
 	//retourner le meilleur individu rencontré pendant la recherche
 	return pop->individus[pop->ordre[0]];

@@ -63,8 +63,8 @@ int main(int argc, char **argv)
 	chromosome *best = algo.optimiser();
 
 	// affiche la fitness du meilleur individu trouv�
-	// cout << "La meilleure solution trouvee est : ";
-	// best->afficher(); VERIFIER
+	cout << "La meilleure solution trouvee est : ";
+	best->afficher();
 
 	// Ae algo(2, taux_croisement, taux_mutation, taille_chromosome);
 	// cout << "\n" << endl;

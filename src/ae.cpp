@@ -44,7 +44,7 @@ chromosome* Ae::optimiser()
 	cout << "Quelques statistiques sur la population initiale" << endl;
 	pop->statiatiques();
 
-	unsigned long time_limit = 10 * 60 * 1000; //temps limite en millisecondes
+	unsigned long time_limit = 1 * 60 * 1000; //temps limite en millisecondes
 	unsigned long time = 0; //temps courant en millisecondes
 	clock_t time_start = clock(); //temps au début en ticks d'horloge
 	int g = 0;
@@ -55,17 +55,22 @@ chromosome* Ae::optimiser()
 		//sélection de deux individus de la population courante
 		pere = pop->selection_tournoi();
 		mere = pop->selection_tournoi();
+		bool stop_temps = false;
 
 		// On effectue un croisementavec une probabilité "taux_croisement"
 		if(Random::aleatoire(1000)/1000.0 < taux_croisement)
 		{
 			bool solution_valide = false;
-			while(!solution_valide) {
+			while(!solution_valide || !stop_temps) {
 				croisementDoubleNX(pere, mere, enfant1, enfant2);
 				enfant1->majTempsTravailInterface();
 				enfant2->majTempsTravailInterface();
 				if(enfant1->valide() && enfant2->valide()) {
 					solution_valide = true;
+				}
+				time = (clock() - time_start) * 1000 / CLOCKS_PER_SEC;
+				if(time > time_limit) {
+					stop_temps = true;
 				}
 			}
 		}
@@ -80,44 +85,55 @@ chromosome* Ae::optimiser()
 		// On effectue la mutation d'un enfant avec une probabilité "taux_mutation"
 		if(Random::aleatoire(1000)/1000.0 < taux_mutation) {
 			bool solution_valide = false;
-			while(!solution_valide) {
+			while(!solution_valide || !stop_temps) {
 				enfant1->melange_alea_genes();
 				enfant1->majTempsTravailInterface();
 				solution_valide = enfant1->valide();
+				time = (clock() - time_start) * 1000 / CLOCKS_PER_SEC;
+				if(time > time_limit) {
+					stop_temps = true;
+				}
 			}
 		}
 
 		// On effectue la mutation de l'autre enfant avec une probabilité "taux_mutation"
 		if(Random::aleatoire(1000)/1000.0 < taux_mutation) {
 			bool solution_valide = false;
-			while(!solution_valide) {
+			while(!solution_valide || !stop_temps) {
 				enfant2->melange_alea_genes();
 				enfant2->majTempsTravailInterface();
 				solution_valide = enfant2->valide();
+				time = (clock() - time_start) * 1000 / CLOCKS_PER_SEC;
+				if(time > time_limit) {
+					stop_temps = true;
+				}
 			}
 		}
 
-		// �valuation des deux nouveaux individus g�n�r�s
-		enfant1->evaluer();
-		enfant2->evaluer();
+		if(!stop_temps) {
+			// �valuation des deux nouveaux individus g�n�r�s
+			enfant1->evaluer();
+			enfant2->evaluer();
 
-		// Insertion des nouveaux individus dans la population
-		pop->remplacement_tournoi(enfant1);
-		pop->remplacement_tournoi(enfant2);
+			// Insertion des nouveaux individus dans la population
+			pop->remplacement_tournoi(enfant1);
+			pop->remplacement_tournoi(enfant2);
 
-		// On réordonne la population selon la fitness
-		pop->reordonner();
+			// On réordonne la population selon la fitness
+			pop->reordonner();
 
-		// Si l'un des nouveaux indivudus-solutions est le meilleur jamais renconté
-		if (pop->individus[pop->ordre[0]]->fitness < best_fitness)
-		{
-			best_fitness = pop->individus[pop->ordre[0]]->fitness;
-			cout << "Amelioration de la meilleure solution a la generation " << g << " : " << best_fitness << endl;
-			amelioration = g;
+			// Si l'un des nouveaux indivudus-solutions est le meilleur jamais renconté
+			if (pop->individus[pop->ordre[0]]->fitness < best_fitness)
+			{
+				best_fitness = pop->individus[pop->ordre[0]]->fitness;
+				cout << "Amelioration de la meilleure solution a la generation " << g << " : " << best_fitness << endl;
+				amelioration = g;
+			}
+
+			g++;
+			time = (clock() - time_start) * 1000 / CLOCKS_PER_SEC;
 		}
 
-		g++;
-		time = (clock() - time_start) * 1000 / CLOCKS_PER_SEC;
 	}
 	//  on affiche les statistiques de la population finale
 	cout << "Quelques statistiques sur la population finale" << endl;

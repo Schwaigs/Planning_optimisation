@@ -62,31 +62,6 @@ int main(int argc, char **argv)
 	// lance l'algorithme �volutionniste
 	chromosome *best = algo.optimiser();
 
-	// affiche la fitness du meilleur individu trouv�
-	// cout << "La meilleure solution trouvee est : ";
-	// best->afficher(); VERIFIER
-
-	// Ae algo(2, taux_croisement, taux_mutation, taille_chromosome);
-	// cout << "\n" << endl;
-	// for(int i = 0; i < algo.taille_pop; i++) {
-	// 	algo.pop->individus[i]->afficher();
-	// 	cout << "\n" << endl;
-	// }
-	// chromosome* enfant1 = new chromosome(taille_chromosome);
-	// chromosome* enfant2 = new chromosome(taille_chromosome);
-	// algo.croisementDoubleNX(algo.pop->individus[0], algo.pop->individus[1], enfant1, enfant2);
-	// cout << "\n" << endl;
-	// enfant1->afficher();
-	// cout << "\n" << endl;
-	// enfant2->afficher();
-
-	// Ae algo(1, taux_croisement, taux_mutation, taille_chromosome);
-	// cout << "" << endl;
-	// algo.pop->individus[0]->afficher();
-	// cout << "" << endl;
-	// algo.pop->individus[0]->melange_alea_genes();
-	// algo.pop->individus[0]->afficher();
-
 	delete best;
 
 }

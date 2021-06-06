@@ -61,8 +61,7 @@ chromosome* Ae::optimiser()
 		if(Random::aleatoire(1000)/1000.0 < taux_croisement)
 		{
 			bool solution_valide = false;
-			while(!solution_valide || !stop_temps) {
-				cout << "croisement" << endl;
+			while(!solution_valide && !stop_temps) {
 				croisementDoubleNX(pere, mere, enfant1, enfant2);
 				enfant1->majTempsTravailInterface();
 				enfant2->majTempsTravailInterface();
@@ -86,7 +85,7 @@ chromosome* Ae::optimiser()
 		// On effectue la mutation d'un enfant avec une probabilité "taux_mutation"
 		if(Random::aleatoire(1000)/1000.0 < taux_mutation) {
 			bool solution_valide = false;
-			while(!solution_valide || !stop_temps) {
+			while(!solution_valide && !stop_temps) {
 				enfant1->melange_alea_genes();
 				enfant1->majTempsTravailInterface();
 				solution_valide = enfant1->valide();
@@ -100,7 +99,7 @@ chromosome* Ae::optimiser()
 		// On effectue la mutation de l'autre enfant avec une probabilité "taux_mutation"
 		if(Random::aleatoire(1000)/1000.0 < taux_mutation) {
 			bool solution_valide = false;
-			while(!solution_valide || !stop_temps) {
+			while(!solution_valide && !stop_temps) {
 				enfant2->melange_alea_genes();
 				enfant2->majTempsTravailInterface();
 				solution_valide = enfant2->valide();

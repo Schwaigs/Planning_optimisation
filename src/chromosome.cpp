@@ -23,7 +23,7 @@ chromosome::chromosome(int tc)
 
 	//on parcourt la liste des apprenants pour leur attribuer à chacun une interface
 	for(int i=0; i<taille; i++){
-		
+
 		//on stocke les interfaces possedants la bonne competence
 		int competenceApprenant = formation[i][2];
 		list<int> interfaceMatch;
@@ -78,7 +78,7 @@ chromosome::~chromosome()
 
 //vérifie la disponibilité d'une interface pour un creaneau de formation
 bool chromosome::interfaceDispo(int idIntervenant, int idFormation){
-	bool dispo = true; 
+	bool dispo = true;
 
 	int centreCreneauCourant = formation[idFormation][1];
 	int jCreneauCourant = formation[idFormation][3];
@@ -103,7 +103,7 @@ bool chromosome::interfaceDispo(int idIntervenant, int idFormation){
 			//si le centre de formation est le même
 			//l'heure de debut et l'heure de fin de deux creneaux qui se suivent peuvent être la même
 			//sinon ce n'est pas possible car il ya le temps de trajet entre les deux centre
-			else if( (centreCreneauAffecte != centreCreneauCourant) && 
+			else if( (centreCreneauAffecte != centreCreneauCourant) &&
 				((hFinCreneauAffecte == hDebutCreneauCourant) || (hDebutCreneauAffecte == hFinCreneauCourant)) ){
 				dispo = false;
 			}
@@ -151,6 +151,68 @@ void chromosome::copier(chromosome* source)
 {
 	for(int i=0; i<taille; i++)
 		genes[i] = source->genes[i];
+	//copier tempsRestantIntervenants ?
+}
+
+void chromosome::shuffle(int *array, size_t n) {
+	if (n > 1) {
+    size_t i;
+    for (i = 0; i < n - 1; i++)
+    {
+      size_t j = i + rand() / (RAND_MAX / (n - i) + 1);
+      int t = array[j];
+      array[j] = array[i];
+      array[i] = t;
+    }
+  }
+}
+
+void chromosome::melange_alea_genes() {
+	int depart = Random::aleatoire(taille);
+	int arrive;
+	int direction = Random::aleatoire(2);
+	int distance = Random::aleatoire_min_max(3, 6);
+	//cout << "depart : " << depart << " - direction : " << direction << " - distance : " << distance << endl;
+
+	if(direction == 0) {
+		int tmp = depart;
+		if((depart - distance) < 0) {
+			distance = depart + 1;
+			depart = 0;
+		}
+		else {
+			depart = (depart - distance) + 1;
+		}
+		arrive = tmp + 1;
+	}
+	else {
+		if((depart + distance) > taille) {
+			distance = taille - depart;
+			arrive = taille;
+		}
+		else {
+			arrive = (depart + distance);
+		}
+	}
+
+	int* tab = (int*) malloc(distance * sizeof(int));
+	int cpt = 0;
+	for(int i = depart; i < arrive; i++) {
+		tab[cpt] = genes[i];
+		cpt++;
+	}
+	// cout << "[ ";
+	// for(int i = 0; i < distance; i++) {
+	// 	cout << tab[i] << ", ";
+	// }
+	// cout << "]" << endl;
+	shuffle(tab, distance);
+	cpt = 0;
+	for(int i = depart; i < arrive; i++) {
+		genes[i] = tab[cpt];
+		cpt++;
+	}
+	free(tab);
 }
 
 // on �change les 2 g�nes
@@ -191,7 +253,6 @@ void chromosome::echange_2_genes_quelconques()
 
 void chromosome::deplacement_1_gene()
 {
-    int debut, fin;
 	//on selection un gene et une position aleatoirement
 	int i = Random::aleatoire(taille);
 	int pos = Random::aleatoire(taille);
@@ -199,7 +260,6 @@ void chromosome::deplacement_1_gene()
 	while (i==pos){
 		pos = Random::aleatoire(taille);
 	}
-    int debut, fin;
 
 	//puis on insert le gene en décalant les genes qui se trouvent entre l'ancienne et la nouvelle position
 	if (pos < i) {
@@ -226,7 +286,7 @@ void chromosome::deplacement_1_gene()
 		genes[fin] = geneI;
 	}
 
-	
+
 
 
 }
@@ -241,7 +301,8 @@ void chromosome::afficher()
 	cout << genes[0];
 	for(int i=1;i<taille;i++)
 		cout << "-" << genes[i];
-	cout << " => fitness = " << fitness << endl;
+	cout << "" << endl;
+	//cout << " => fitness = " << fitness << endl;
 }
 
 bool chromosome::identique(chromosome* chro)

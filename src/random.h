@@ -6,17 +6,21 @@
 
 class Random{
 public:
-    // initialise le générateur de variables aléatoire
+    // initialise le gï¿½nï¿½rateur de variables alï¿½atoire
     static void randomize()
     {
       srand ( time(NULL) );
     };
 
-    // retourne une variable aléatoire entière comprise entre 0 et (borne-1)
+    // retourne une variable alï¿½atoire entiï¿½re comprise entre 0 et (borne-1)
     static long aleatoire(long borne)
     {
       return(rand()%borne);
     };
+
+    static int aleatoire_min_max(int min, int max) {
+      return rand()%(max-min)+min;
+    }
 };
 
 # endif

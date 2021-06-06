@@ -31,8 +31,15 @@ public:
 	void test_acces_donnees_instances();
                              // constuie la matrice des distances
 	chromosome* optimiser(); // fonction principale qui d�cit le d�roulement de l'algorithme �volusionniste
-
+	void sort(int* tab, int size);
+	bool isInArray(int value, int* tab, int size);
 	// OPERATEURS DE CROISEMENT
+	// double croisement NX de deux chromosomes
+	void croisementDoubleNX(chromosome* parent1, chromosome* parent2,
+													chromosome* enfant1, chromosome* enfant2);
+	// opérateur de croisement NX de deux chromosomes
+	void croisementNX(chromosome* parent1, chromosome* parent2,
+													chromosome* enfant1, chromosome* enfant2, int croisementN);
 	// op�rateur de croisement 1X de deux chromosomes
     void croisement1X(chromosome* parent1, chromosome* parent2,
                       chromosome* enfant1, chromosome* enfant2);

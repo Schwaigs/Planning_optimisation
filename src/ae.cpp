@@ -1,5 +1,6 @@
 #include "ae.h"
 #include <math.h>
+#include <time.h>
 
 using namespace std;
 
@@ -32,8 +33,8 @@ chromosome* Ae::optimiser()
 	int best_fitness;
 
 	// �valuation des individus de la population initiale
-	for(int ind=0; ind<taille_pop; ind++)
-		//pop->individus[ind]->evaluer(les_distances);
+	// for(int ind=0; ind<taille_pop; ind++)
+	// 	pop->individus[ind]->evaluer(les_distances);
 
 	// on ordonne les indivudus selon leur fitness
 	pop->ordonner();
@@ -43,8 +44,14 @@ chromosome* Ae::optimiser()
 	cout << "Quelques statistiques sur la population initiale" << endl;
 	pop->statiatiques();
 
-	//tant que le nombre de g�n�rations limite n'est pas atteint
-	for(int g=0; g<nbgenerations; g++)
+	unsigned long time_limit = 15 * 60 * 1000; //temps limite en millisecondes
+	unsigned long time = 0; //temps courant en millisecondes
+	clock_t time_start = clock(); //temps au début en ticks d'horloge
+	int g = 0;
+
+	//tant que la limite de temps n'est pas atteinte, à savoir 15min
+	while(time < time_limit)
+	//for(int g=0; g<nbgenerations; g++)
 	{
 		//s�lection de deux individus de la population courante
 		pere = pop->selection_tournoi();
@@ -70,11 +77,11 @@ chromosome* Ae::optimiser()
 			enfant2->echange_2_genes_consecutifs();
 
 		// �valuation des deux nouveaux individus g�n�r�s
-		enfant1->evaluer(/*les_distances*/);
-		enfant2->evaluer(/*les_distances*/);
+		// enfant1->evaluer(les_distances);
+		// enfant2->evaluer(les_distances);
 
 		// Insertion des nouveaux individus dans la population
-        
+
 		pop->remplacement_tournoi(enfant1);
 		pop->remplacement_tournoi(enfant2);
         /*
@@ -85,7 +92,7 @@ chromosome* Ae::optimiser()
             }else if(pop->individus[i]==mere){
                 pop->individus[i]==enfant2;
             }
-            
+
         }*/
 
 		// On r�ordonne la population selon la fitness
@@ -98,6 +105,9 @@ chromosome* Ae::optimiser()
 			cout << "Amelioration de la meilleure solution a la generation " << g << " : " << best_fitness << endl;
 			amelioration = g;
 		}
+
+		g++;
+		time = (clock() - time_start) * 1000 / CLOCKS_PER_SEC;
 	}
 	//  on affiche les statistiques de la population finale
 	cout << "Quelques statistiques sur la population finale" << endl;
@@ -107,6 +117,106 @@ chromosome* Ae::optimiser()
 
 	//retourner le meilleur individu rencontr� pendant la recherche
 	return pop->individus[pop->ordre[0]];
+}
+
+void Ae::sort(int* tab, int size) {
+	for(int i = 0; i < size; i++) {
+		int min = tab[i];
+    int indice = i;
+		for(int j = i+1; j < size; j++) {
+			if(tab[j] < min) {
+				min = tab[j];
+        indice = j;
+			}
+		}
+    tab[indice] = tab[i];
+		tab[i] = min;
+	}
+}
+
+bool Ae::isInArray(int value, int* tab, int size) {
+	bool res = false;
+	for(int i = 0; i < size; i++) {
+		if(tab[i] == value) {
+			res = true;
+		}
+	}
+	return res;
+}
+
+void Ae::croisementDoubleNX(chromosome* parent1, chromosome* parent2,
+												chromosome* enfant1, chromosome* enfant2)
+{
+	int premierCroisementN = Random::aleatoire_min_max(1, 5);
+
+	chromosome* copie_enfant1 = new chromosome(parent1->taille);
+	chromosome* copie_enfant2 = new chromosome(parent1->taille);
+
+	//cout << premierCroisementN << "\n" << endl;
+	croisementNX(parent1, parent2, enfant1, enfant2, premierCroisementN);
+	copie_enfant1->copier(enfant1);
+	copie_enfant2->copier(enfant2);
+	// copie_enfant1->afficher();
+	// copie_enfant2->afficher();
+
+	int deuxiemeCroisementN = Random::aleatoire_min_max(1, 5);
+	while(deuxiemeCroisementN == premierCroisementN) {
+		deuxiemeCroisementN = Random::aleatoire_min_max(1, 5);
+	}
+	//cout << deuxiemeCroisementN << "\n" << endl;
+
+	croisementNX(copie_enfant1, copie_enfant2, enfant1, enfant2, deuxiemeCroisementN);
+
+	delete copie_enfant1;
+	delete copie_enfant2;
+
+}
+
+void Ae::croisementNX(chromosome* parent1, chromosome* parent2,
+												chromosome* enfant1, chromosome* enfant2, int croisementN)
+{
+	int nb_genes = parent1->taille;
+	bool regular_add = true;
+	//int croisementN = Random::aleatoire_min_max(1, 5);
+	int* points_croisements = new int[croisementN+1];
+
+	for(int i = 0; i < croisementN; i++) {
+		int alea = Random::aleatoire(nb_genes);
+		while(isInArray(alea, points_croisements, i) == true) {
+			alea = Random::aleatoire(nb_genes);
+		}
+		points_croisements[i] = alea;
+	}
+	points_croisements[croisementN] = nb_genes;
+	sort(points_croisements, croisementN);
+	// cout << "[";
+	// for(int i = 0; i < croisementN+1; i++) {
+	// 	cout << points_croisements[i] << ", ";
+	// }
+	// cout << "]" << endl;
+
+	//croisement sur le premier parent
+	int start = 0;
+	for(int i = 0; i < croisementN+1; i++) {
+		int croisement = points_croisements[i];
+		if(regular_add == true) {
+			for(int j = start; j < croisement; j++) {
+				enfant1->genes[j] = parent1->genes[j];
+				enfant2->genes[j] = parent2->genes[j];
+			}
+			regular_add = false;
+		}
+		else {
+			for(int j = start; j < croisement; j++) {
+				enfant1->genes[j] = parent2->genes[j];
+				enfant2->genes[j] = parent1->genes[j];
+			}
+			regular_add = true;
+		}
+		start = croisement;
+	}
+
+	delete[] points_croisements;
 }
 
 // op�rateur de croisement � un point : croisement 1X
@@ -172,7 +282,7 @@ void Ae::croisement2LOX(chromosome* parent1, chromosome* parent2,
 }
 
 void Ae::test_acces_donnees_instances()
-{	
+{
 	int idApprenant = 5;
 	int idIntervenant = 6;
 
@@ -185,4 +295,3 @@ void Ae::test_acces_donnees_instances()
 	cout << "Coordonées du centre de formation de l'apprenant = [" << coord[specialiteApprenant+1][0] << "," << coord[specialiteApprenant+1][1] << "]" << endl;
 	cout << "Distance entre les deux centres = " << distance << endl;
 }
-

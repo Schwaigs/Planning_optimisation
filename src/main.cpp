@@ -26,8 +26,8 @@ int main(int argc, char **argv)
 	// valeurs par defaut
 	int nb_generation     = 50;
 	int taille_population = NBR_APPRENANTS * 2;
-	float taux_croisement = 0.8;
-	float taux_mutation   = 0.5;
+	float taux_croisement = 0.5;
+	float taux_mutation   = 0.01;
 	int taille_chromosome = NBR_APPRENANTS;
 
 	if (argc == 6)
@@ -55,7 +55,7 @@ int main(int argc, char **argv)
 	}
 
 	// initialise l'algorithme �volutionniste
-	Ae algo(nb_generation, taille_population, taux_croisement, taux_mutation, taille_chromosome);
+	//Ae algo(nb_generation, taille_population, taux_croisement, taux_mutation, taille_chromosome);
 	// arguments du constructeur de l'objet Ae
 	//    1. nombre de g�n�ration (entier > 0)
 	//    2. taille de la population (entier > 0)
@@ -69,4 +69,26 @@ int main(int argc, char **argv)
 	// affiche la fitness du meilleur individu trouv�
 	//cout << "La meilleure solution trouvee est : ";
 	//best->afficher();
+
+	// Ae algo(nb_generation, 2, taux_croisement, taux_mutation, taille_chromosome);
+	// cout << "\n" << endl;
+	// for(int i = 0; i < algo.taille_pop; i++) {
+	// 	algo.pop->individus[i]->afficher();
+	// 	cout << "\n" << endl;
+	// }
+	// chromosome* enfant1 = new chromosome(taille_chromosome);
+	// chromosome* enfant2 = new chromosome(taille_chromosome);
+	// algo.croisementDoubleNX(algo.pop->individus[0], algo.pop->individus[1], enfant1, enfant2);
+	// cout << "\n" << endl;
+	// enfant1->afficher();
+	// cout << "\n" << endl;
+	// enfant2->afficher();
+
+	Ae algo(nb_generation, 1, taux_croisement, taux_mutation, taille_chromosome);
+	cout << "" << endl;
+	algo.pop->individus[0]->afficher();
+	cout << "" << endl;
+	algo.pop->individus[0]->melange_alea_genes();
+	algo.pop->individus[0]->afficher();
+
 }

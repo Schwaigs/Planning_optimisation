@@ -3,6 +3,7 @@
 
 #include <math.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <iostream>
 #include "random.h"
 #include "instance-80formations.h"
@@ -30,8 +31,10 @@ public:
 					    //   l'ex�cution des operateurs de mutation et de croisement
     void copier(chromosome* source);  // copie le chromosome 'source'
     bool identique(chromosome* chro); // test si 2 chromosome sont identique
+		void shuffle(int *array, size_t n);
 
     // OPERATEURS DE MUTATION
+		void melange_alea_genes();
     void echange_2_genes(int gene1,     // interchange 2 g�nes du chromosome
                          int gene2);
     void echange_2_genes_consecutifs(); // interchange 2 g�nes cons�cutifs du chromosome

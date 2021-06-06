@@ -25,10 +25,10 @@ int main(int argc, char **argv)
 
 	// valeurs par defaut
 	int nb_generation     = 50;
-	int taille_population = NBR_APPRENANTS * 2;
+	int taille_population = NBR_FORMATIONS * 2;
 	float taux_croisement = 0.5;
 	float taux_mutation   = 0.01;
-	int taille_chromosome = NBR_APPRENANTS;
+	int taille_chromosome = NBR_FORMATIONS;
 
 	if (argc == 6)
 	{
@@ -50,9 +50,10 @@ int main(int argc, char **argv)
 		cout << "   2. taille de la population (entier > 0)" << endl;
 		cout << "   3. taux de croisement (0 <= reel <= 1)" << endl;
 		cout << "   4. taux de mutation (0 <= reel <= 1)" << endl;
-		cout << "   5. nombre de villes (=taille d'un chromosome)" << endl;
+		cout << "   5. nombre de formation (=taille d'un chromosome)" << endl;
 		exit(EXIT_FAILURE);
 	}
+
 
 	// initialise l'algorithme �volutionniste
 	//Ae algo(nb_generation, taille_population, taux_croisement, taux_mutation, taille_chromosome);
@@ -61,10 +62,10 @@ int main(int argc, char **argv)
 	//    2. taille de la population (entier > 0)
 	//    3. taux de croisement (0 <= reel <= 1)
 	//    4. taux de mutation (0 <= reel <= 1)
-	//    5. nombre de villes (=taille d'un chromosome)
+	//    5. nombre de formation (=taille d'un chromosome)
 
 	// lance l'algorithme �volutionniste
-	//chromosome *best = algo.optimiser();
+	chromosome *best = algo.optimiser();
 
 	// affiche la fitness du meilleur individu trouv�
 	//cout << "La meilleure solution trouvee est : ";
@@ -84,11 +85,11 @@ int main(int argc, char **argv)
 	// cout << "\n" << endl;
 	// enfant2->afficher();
 
-	Ae algo(nb_generation, 1, taux_croisement, taux_mutation, taille_chromosome);
-	cout << "" << endl;
-	algo.pop->individus[0]->afficher();
-	cout << "" << endl;
-	algo.pop->individus[0]->melange_alea_genes();
-	algo.pop->individus[0]->afficher();
+	// Ae algo(nb_generation, 1, taux_croisement, taux_mutation, taille_chromosome);
+	// cout << "" << endl;
+	// algo.pop->individus[0]->afficher();
+	// cout << "" << endl;
+	// algo.pop->individus[0]->melange_alea_genes();
+	// algo.pop->individus[0]->afficher();
 
 }

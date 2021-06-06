@@ -136,7 +136,6 @@ chromosome* population::selection_roulette()
 //op�rateur de s�lection bas� sur la fonction fitness
 chromosome* population::selection_tournoi()
 {
-    cout << "initialisation données\n";
     int n = taille_pop/10; //nombre d'individus tirés
 	chromosome* chromosomeFitnessMin;
     int index_indiv; //index de l'individu tiré
@@ -158,7 +157,6 @@ chromosome* population::selection_tournoi()
             chromosomeFitnessMin = individusTires[i];
         }
     }
-    cout << chromosomeFitnessMin->fitness ;
 
     return chromosomeFitnessMin;
 }
@@ -203,7 +201,6 @@ void population::remplacement_roulette(chromosome* individu)
 }
 
 void population::remplacement_tournoi(chromosome* individu){
-    cout << "initialisation données\n";
     int n = taille_pop/10; //nombre d'individus tirés
 	chromosome* chromosomeFitnessMax;
     int index_indiv; //index de l'individu tiré
@@ -223,7 +220,7 @@ void population::remplacement_tournoi(chromosome* individu){
         }else if(individus[index_max]->fitness<individus[index_indiv]->fitness){
             index_max = index_indiv;
         }
-        cout << "fitness max : " << individus[index_max]->fitness << "courant : "<<individus[index_indiv]->fitness <<"\n";
+        //cout << "fitness max : " << individus[index_max]->fitness << "courant : "<<individus[index_indiv]->fitness <<"\n";
     }
 
 	individus[index_max]->copier(individu);

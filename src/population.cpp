@@ -22,7 +22,7 @@ population::~population()
 }
 
 // statistiques sur la population VERIFIER
-void population::statiatiques()
+void population::statistiques()
 {
 	double moyenne    = 0;
 	double ecart_type = 0;

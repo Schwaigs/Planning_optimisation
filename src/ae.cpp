@@ -42,7 +42,7 @@ chromosome* Ae::optimiser()
 	best_fitness = pop->individus[pop->ordre[0]]->fitness;
 	//  on affiche les statistiques de la population initiale
 	cout << "Quelques statistiques sur la population initiale" << endl;
-	pop->statiatiques();
+	pop->statistiques();
 
 	unsigned long time_limit = 10 * 60 * 1000; //temps limite en millisecondes
 	unsigned long time = 0; //temps courant en millisecondes
@@ -121,7 +121,7 @@ chromosome* Ae::optimiser()
 	}
 	//  on affiche les statistiques de la population finale
 	cout << "Quelques statistiques sur la population finale" << endl;
-	pop->statiatiques();
+	pop->statistiques();
 	//  on affiche la consanginité de la population finale
 	pop->similitude();
 

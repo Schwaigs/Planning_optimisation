@@ -1,4 +1,4 @@
-#include "instance-80formations.h"
+#include "instance-80formations_5.h"
 
 /* competences des interfaces en SIGNES et CODAGE*/
 int competences_interfaces[NBR_INTERFACES][2]={

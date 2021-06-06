@@ -23,7 +23,7 @@ int main(int argc, char **argv)
 	Random::randomize();
 
 	// valeurs par defaut
-	int taille_population = NBR_FORMATIONS * 2;
+	int taille_population = NBR_FORMATIONS;
 	float taux_croisement = 0.5;
 	float taux_mutation   = 0.01;
 	int taille_chromosome = NBR_FORMATIONS;

@@ -41,7 +41,7 @@ chromosome* Ae::optimiser()
 	cout << "Quelques statistiques sur la population initiale" << endl;
 	pop->statistiques();
 
-	unsigned long time_limit = 1 * 60 * 1000; //temps limite en millisecondes
+	unsigned long time_limit = 5 * 60 * 1000; //temps limite en millisecondes
 	unsigned long time = 0; //temps courant en millisecondes
 	clock_t time_start = clock(); //temps au début en ticks d'horloge
 	int g = 0;

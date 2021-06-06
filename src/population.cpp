@@ -71,7 +71,7 @@ int population::nb_chromosomes_similaires(chromosome* chro)
 	return nb;
 }
 
-// Ordonne les individus de la population par ordre croissant de fitness VERIFIER
+// Ordonne les individus de la population par ordre croissant de fitness
 void population::ordonner()
 {
 	int inter;

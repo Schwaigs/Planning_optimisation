@@ -15,7 +15,7 @@ public:
     // ATTRIBUTS
 	int *genes;         // les g�nes du chromosome/solution
 	int taille;         // la taille du chromosome = nombre de g�nes
-	int fitness;        // la valeur de la fonction objectif (fitness) de la solution
+	double fitness;        // la valeur de la fonction objectif (fitness) de la solution
 	int *tempsRestantIntervenants; //le temps de travail encore disponible pour chaque interface
 
 	// CONSTRUCTEURS

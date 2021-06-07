@@ -28,10 +28,11 @@ chromosome* Ae::optimiser()
 	chromosome *enfant2 = new chromosome(taille_chromosome);
 	chromosome *pere;
 	chromosome *mere;
-	int best_fitness;
+	double best_fitness;
 	// évaluation des individus de la population initiale
-	for(int ind=0; ind<taille_pop; ind++)
+	for(int ind=0; ind<taille_pop; ind++){
 		pop->individus[ind]->evaluer();
+	}
 
 	// on ordonne les indivudus selon leur fitness
 	pop->ordonner();

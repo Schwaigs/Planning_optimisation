@@ -4,7 +4,8 @@
                   
 #define NBR_INTERFACES        6
 #define NBR_APPRENANTS        20
-#define NBR_FORMATIONS        20
+#define NBR_FORMATIONS_APPRENANT    1
+#define NBR_FORMATIONS              NBR_APPRENANTS*NBR_FORMATIONS_APPRENANT
 #define NBR_CENTRES_FORMATION 5
 #define NBR_SPECIALITES       5
 

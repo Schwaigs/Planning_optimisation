@@ -51,7 +51,8 @@ int main(int argc, char **argv)
 	cout << "La taille de la population est de " << taille_population << endl;
 	cout << "Le taux de croisement est de " << taux_croisement << endl;
 	cout << "Le taux de mutation est de " << taux_mutation << endl;
-	cout << "Il y a " << NBR_APPRENANTS << " apprenants suivant chacun " << NBR_FORMATIONS_APPRENANT << " formation(s). La taille d'un chromosome est donc de " << taille_chromosome << endl << endl;
+	cout << "Il y a " << NBR_APPRENANTS << " apprenants suivant chacun " << NBR_FORMATIONS_APPRENANT << " formation(s). La taille d'un chromosome est donc de " << taille_chromosome << endl;
+	cout << "Il y a " << NBR_CENTRES_FORMATION << " centres de formations " << endl << endl;
 
 	// initialise l'algorithme �volutionniste
 	Ae algo(taille_population, taux_croisement, taux_mutation, taille_chromosome);

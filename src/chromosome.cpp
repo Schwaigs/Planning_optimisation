@@ -61,17 +61,24 @@ chromosome::chromosome(int tc)
 		}
 
 		//on choisi enfin aléatoirement l'interface qui sera affectée pour le creneau parmis celles disponibles
-		int a = Random::aleatoire(interfaceMatch.size());
-
-		//on parcours la liste des interfaces disponibles
-		list<int>::iterator it = interfaceMatch.begin();
-		for (int j=0; j<a; j++){
-			it++;
+		//si aucune interface ne convient, alors on doit recommencer à chercher une solution depuis le début
+		if(interfaceMatch.empty()){
+			i = 0;
 		}
-		genes[i] = *it;
+		else{
+			int a = Random::aleatoire(interfaceMatch.size());
 
-		//on met à jour son nombre d'heure restant
-		tempsRestantIntervenants[genes[i]] -= formation[idApprenant][idCours][5]-formation[idApprenant][idCours][4];
+			//on parcours la liste des interfaces disponibles
+			list<int>::iterator it = interfaceMatch.begin();
+			for (int j=0; j<a; j++){
+				it++;
+			}
+			genes[i] = *it;
+
+			//on met à jour son nombre d'heure restant
+			tempsRestantIntervenants[genes[i]] -= formation[idApprenant][idCours][5]-formation[idApprenant][idCours][4];
+		}
+		
 	}
 }
 

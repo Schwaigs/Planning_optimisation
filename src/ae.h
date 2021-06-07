@@ -7,7 +7,7 @@
 #include <fstream>
 #include "population.h"
 #include "chromosome.h"
-#include "instancesFormations/instance-80formations_5.h"
+#include "instancesFormations/instance-20formations_5.h"
 
 using namespace std;
 // La classe Ae d�finie les param�tres d'une ex�cution d'un algorithme

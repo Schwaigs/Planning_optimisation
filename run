@@ -1,2 +1,7 @@
 #!/bin/sh
-./src/main
+if [ $# -eq 3 ];
+then
+    ./src/main $1 $2 $3
+else 
+    ./src/main
+fi

@@ -312,6 +312,7 @@ void chromosome::evaluer()
 
 
 	//On calcul l'evaluation de la solution
+	//cout << "0.5 * (" << moyenneDistances << " + " << ecartTypeDistances << ") + 0.5 * " << fcorr << " * " << nbSpecNonRespectees << endl;
     fitness = 0.5 * (moyenneDistances + ecartTypeDistances) + 0.5 * fcorr * nbSpecNonRespectees;
 }
 

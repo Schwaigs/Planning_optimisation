@@ -32,6 +32,7 @@ chromosome* Ae::optimiser()
 	// évaluation des individus de la population initiale
 	for(int ind=0; ind<taille_pop; ind++){
 		pop->individus[ind]->evaluer();
+		//cout << "chromosome " << ind << " fitness = " << pop->individus[ind]->fitness << endl;
 	}
 
 	// on ordonne les indivudus selon leur fitness

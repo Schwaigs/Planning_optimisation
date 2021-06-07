@@ -7,7 +7,7 @@
 #include <stdlib.h>
 #include <iostream>
 #include "random.h"
-#include "instancesFormations/instance-20formations_5.h"
+#include "instancesFormations/instance-80formations_5.h"
 
 // La classe chromosome represente la structure d'une solution du probl�me
 class chromosome{

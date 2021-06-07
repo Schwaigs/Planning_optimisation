@@ -41,11 +41,10 @@ int main(int argc, char **argv)
 	else
 	{
 		cout << "Nombre d'arguments n'est pas correct." << endl;
-		cout << "Soit l'executable 'algo_evo' ne prend pas d'arguments soit il prend 4 arguments : " << endl;
+		cout << "Soit l'executable 'main' ne prend pas d'arguments soit il prend 3 arguments : " << endl;
 		cout << "   1. taille de la population (entier > 0)" << endl;
 		cout << "   2. taux de croisement (0 <= reel <= 1)" << endl;
 		cout << "   3. taux de mutation (0 <= reel <= 1)" << endl;
-		cout << "   4. nombre de formation (=taille d'un chromosome)" << endl;
 		exit(EXIT_FAILURE);
 	}
 

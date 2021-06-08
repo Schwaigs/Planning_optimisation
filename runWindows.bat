@@ -1,6 +1,9 @@
 cd src
-if %*% == 3 (
+set argC=0
+for %%x in (%*) do Set /A argC+=1
+if %argC% equ 3 (
     CALL main.exe %1 %2 %3
-) else (
+)
+else (
     CALL main.exe
 )

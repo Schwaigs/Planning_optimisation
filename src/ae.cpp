@@ -142,6 +142,7 @@ chromosome* Ae::optimiser()
 	return pop->individus[pop->ordre[0]];
 }
 
+//fonction qui trie dans l'ordre croissant un tableau d'entier d'une taille donnée
 void Ae::sort(int* tab, int size) {
 	for(int i = 0; i < size; i++) {
 		int min = tab[i];
@@ -157,6 +158,7 @@ void Ae::sort(int* tab, int size) {
 	}
 }
 
+//fonction qui vérifie si un élément passé en paramètre se situe dans un tableau d'entier également passé en paramètre
 bool Ae::isInArray(int value, int* tab, int size) {
 	bool res = false;
 	for(int i = 0; i < size; i++) {
@@ -167,23 +169,30 @@ bool Ae::isInArray(int value, int* tab, int size) {
 	return res;
 }
 
+// double croisement NX de deux chromosomes
 void Ae::croisementDoubleNX(chromosome* parent1, chromosome* parent2,
 												chromosome* enfant1, chromosome* enfant2)
 {
+	//Sélection aléatoire du nombre de points de croisements qu'il y aura lors du premier croisement
 	int premierCroisementN = Random::aleatoire_min_max(1, 5);
 
+	//enfants intermédiaires issues du premier croisement et qui seront les parents du deuxième croisement
 	chromosome* enfant_intermediaire1 = new chromosome(parent1->taille);
 	chromosome* enfant_intermediaire2 = new chromosome(parent1->taille);
 
+	//On effectue un premier croisement NX avec N la valeur fournie par premierCroisementN
 	croisementNX(parent1, parent2, enfant1, enfant2, premierCroisementN);
 	enfant_intermediaire1->copier(enfant1);
 	enfant_intermediaire2->copier(enfant2);
 
+	//Sélection aléatoire du nombre de points de croisements qu'il y aura lors du deuxième croisement
 	int deuxiemeCroisementN = Random::aleatoire_min_max(1, 5);
+	//On vérifie de ne pas tomber sur le même nombre de points de croisements que précédemment
 	while(deuxiemeCroisementN == premierCroisementN) {
 		deuxiemeCroisementN = Random::aleatoire_min_max(1, 5);
 	}
 
+	//On effectue le deuxième croisement NX avec comme parents les enfants intermédiaires déterminés précédemment
 	croisementNX(enfant_intermediaire1, enfant_intermediaire2, enfant1, enfant2, deuxiemeCroisementN);
 
 	delete enfant_intermediaire1;
@@ -191,6 +200,7 @@ void Ae::croisementDoubleNX(chromosome* parent1, chromosome* parent2,
 
 }
 
+// opérateur de croisement NX de deux chromosomes
 void Ae::croisementNX(chromosome* parent1, chromosome* parent2,
 												chromosome* enfant1, chromosome* enfant2, int croisementN)
 {
@@ -198,6 +208,8 @@ void Ae::croisementNX(chromosome* parent1, chromosome* parent2,
 	bool regular_add = true;
 	int* points_croisements = new int[croisementN+1];
 
+	/*On choisit aléatoirement les points de croisements et on vérifie par ailleurs de ne pas tomber sur un point de croisement
+	déjà déterminé*/
 	for(int i = 0; i < croisementN; i++) {
 		int alea = Random::aleatoire(nb_genes);
 		while(isInArray(alea, points_croisements, i) == true) {
@@ -206,11 +218,16 @@ void Ae::croisementNX(chromosome* parent1, chromosome* parent2,
 		points_croisements[i] = alea;
 	}
 	points_croisements[croisementN] = nb_genes;
+
+	//On trie les points de croisements dans l'ordre croissant
 	sort(points_croisements, croisementN);
 
+	//On effectue le croisement entre les deux parents
 	int start = 0;
 	for(int i = 0; i < croisementN+1; i++) {
 		int croisement = points_croisements[i];
+		/*Si regular_add vaut true, cela signifie que les valeurs situés entre le dernier et le nouveau point de croisement
+		du parent1 vont vers l'enfant1 et pareil pour le parent2 où les valeurs vont vers l'enfant2. Pas de croisement*/
 		if(regular_add == true) {
 			for(int j = start; j < croisement; j++) {
 				enfant1->genes[j] = parent1->genes[j];
@@ -218,6 +235,8 @@ void Ae::croisementNX(chromosome* parent1, chromosome* parent2,
 			}
 			regular_add = false;
 		}
+		/*Si regular_add vaut false, alors les valeurs du parent1 vont vers l'enfant2 et inversement pour le parent2 où les
+		valeurs vont vers l'enfant1. Croisement*/
 		else {
 			for(int j = start; j < croisement; j++) {
 				enfant1->genes[j] = parent2->genes[j];

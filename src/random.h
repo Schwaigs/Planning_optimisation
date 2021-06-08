@@ -18,6 +18,7 @@ public:
       return(rand()%borne);
     };
 
+    //retourne une variable aléatoire entière comprise entre min et (max-1)
     static int aleatoire_min_max(int min, int max) {
       return rand()%(max-min)+min;
     }

@@ -78,7 +78,7 @@ chromosome::chromosome(int tc)
 			//on met à jour son nombre d'heure restant
 			tempsRestantIntervenants[genes[i]] -= formation[idApprenant][idCours][5]-formation[idApprenant][idCours][4];
 		}
-		
+
 	}
 }
 
@@ -331,6 +331,7 @@ void chromosome::copier(chromosome* source)
 		genes[i] = source->genes[i];
 }
 
+//mélange aléatoire des valeurs d'un tableau passé en paramètre
 void chromosome::shuffle(int *array, size_t n) {
 	if (n > 1) {
 		size_t i;
@@ -344,12 +345,18 @@ void chromosome::shuffle(int *array, size_t n) {
   	}
 }
 
+//mélange aléatoire des gènes situés entre deux points du chromosome
 void chromosome::melange_alea_genes() {
+	//Sélection aléatoire du point de départ
 	int depart = Random::aleatoire(taille);
 	int arrive;
+	//Sélection aléatoire de la direction dans laquelle on se dirige: 0 = gauche ; 1 = droite
 	int direction = Random::aleatoire(2);
+	//Sélection aléatoire de la distance correspondant au nombre de gènes a modifier : compris entre 3 et 5
 	int distance = Random::aleatoire_min_max(3, 6);
 
+	//On détermine le point d'arrivée en fonction de la direction
+	//Si on dépasse les limites du tableau, on ajuste les points de départ et d'arrivée de sorte à rester dans les limites du tableau
 	if(direction == 0) {
 		int tmp = depart;
 		if((depart - distance) < 0) {
@@ -371,13 +378,16 @@ void chromosome::melange_alea_genes() {
 		}
 	}
 
+	//On récupère les gènes situés entre le point de départ et d'arrivée et on les stocke dans un tableau à part
 	int* tab = (int*) malloc(distance * sizeof(int));
 	int cpt = 0;
 	for(int i = depart; i < arrive; i++) {
 		tab[cpt] = genes[i];
 		cpt++;
 	}
+	//On mélange ce tableau pour changer la position des gènes de manière aléatoire
 	shuffle(tab, distance);
+	//On affecte les gènes déplacés dans le chromosome à la place des anciens gènes
 	cpt = 0;
 	for(int i = depart; i < arrive; i++) {
 		genes[i] = tab[cpt];

@@ -31,11 +31,11 @@ public:
 					    //   l'ex�cution des operateurs de mutation et de croisement
     void copier(chromosome* source);  // copie le chromosome 'source'
     bool identique(chromosome* chro); // test si 2 chromosome sont identique
-	void shuffle(int *array, size_t n);
+	void shuffle(int *array, size_t n); //mélange aléatoire des valeurs d'un tableau passé en paramètre
     void majTempsTravailInterface(); //met à jour le tableau de temps de travail des interface suite à un changement dans les genes
 
     // OPERATEURS DE MUTATION
-	void melange_alea_genes();
+		void melange_alea_genes(); //mélange aléatoire des gènes situé entre deux points du chromosome
 };
 
 # endif

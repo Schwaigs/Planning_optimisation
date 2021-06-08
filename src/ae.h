@@ -26,8 +26,11 @@ public:
 	~Ae(); // destructeur de l'objet Ae
 
 	// METHODES
-	chromosome* optimiser(); // fonction principale qui d�cit le d�roulement de l'algorithme �volusionniste
+	// fonction principale qui d�cit le d�roulement de l'algorithme �volusionniste
+	chromosome* optimiser();
+	//fonction qui trie dans l'ordre croissant un tableau d'entier d'une taille donnée
 	void sort(int* tab, int size);
+	//fonction qui vérifie si un élément passé en paramètre se situe dans un tableau d'entier également passé en paramètre
 	bool isInArray(int value, int* tab, int size);
 	// OPERATEURS DE CROISEMENT
 	// double croisement NX de deux chromosomes

@@ -1,19 +1,19 @@
-#include "population.h"
+#include "Population.h"
 
 using namespace std;
 
 // initialisation d'une population de solutions
-population::population(int tp, int tc)
+Population::Population(int tp, int tc)
 {
 	taille_pop = tp;
-	individus  = new chromosome*[taille_pop];
+	individus  = new Chromosome*[taille_pop];
 	for (int i=0; i<taille_pop; i++)
-		individus[i] = new chromosome(tc);
+		individus[i] = new Chromosome(tc);
 	ordre = new int[taille_pop];
 }
 
-// destruction de l'objet "population"
-population::~population()
+// destruction de l'objet "Population"
+Population::~Population()
 {
 	for (int i=0; i<taille_pop; i++)
 		delete individus[i];
@@ -22,7 +22,7 @@ population::~population()
 }
 
 // statistiques sur la population
-void population::statistiques()
+void Population::statistiques()
 {
 	double moyenne    = 0;
 	double ecart_type = 0;
@@ -44,7 +44,7 @@ void population::statistiques()
 }
 
 // Ordonne les individus de la population par ordre croissant de fitness
-void population::ordonner()
+void Population::ordonner()
 {
 	int inter;
 	for(int i=0; i<taille_pop; i++)
@@ -62,7 +62,7 @@ void population::ordonner()
 
 // R�-ordonne le classement des individus de la population par ordre croissant de fitness
 //   apr�s un petit changement
-void population::reordonner()
+void Population::reordonner()
 {
 	int inter;
 	for(int i=0; i<taille_pop-1; i++)
@@ -77,12 +77,12 @@ void population::reordonner()
 
 // SELECTION PAR TOURNOI
 //op�rateur de s�lection bas� sur la fonction fitness
-chromosome* population::selection_tournoi()
+Chromosome* Population::selection_tournoi()
 {
     int n = taille_pop/10; //nombre d'individus tirés
-	chromosome* chromosomeFitnessMin;
+	Chromosome* chromosomeFitnessMin;
     int index_indiv; //index de l'individu tiré
-    chromosome* individusTires[n];
+    Chromosome* individusTires[n];
     //tirage de n individus
 
     for(int i = 0; i<n; i++){
@@ -103,7 +103,7 @@ chromosome* population::selection_tournoi()
     return chromosomeFitnessMin;
 }
 
-int population::in_list(int index, chromosome** individusTires, int taille){
+int Population::in_list(int index, Chromosome** individusTires, int taille){
     if(index<0){
         return 1;
     }
@@ -115,12 +115,12 @@ int population::in_list(int index, chromosome** individusTires, int taille){
     return 0;
 }
 
-void population::remplacement_tournoi(chromosome* individu){
+void Population::remplacement_tournoi(Chromosome* individu){
     int n = taille_pop/10; //nombre d'individus tirés
-	chromosome* chromosomeFitnessMax;
+	Chromosome* chromosomeFitnessMax;
     int index_indiv; //index de l'individu tiré
     int index_max=-1;
-    chromosome* individusTires[n];
+    Chromosome* individusTires[n];
 
     //tirage de n individus
     for(int i = 0; i<n; i++){

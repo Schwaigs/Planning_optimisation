@@ -33,9 +33,9 @@ FLAGS= -c -g -Wall -ansi
 # Liste des objets que l'on va obtenir, et qu'il faudra linker.
 OBJ= \
 	main.o \
-	ae.o \
-	chromosome.o \
-	population.o \
+	AlgoGenetic.o \
+	Chromosome.o \
+	Population.o \
 	instancesFormations/instance-80formations_5.o
 
 

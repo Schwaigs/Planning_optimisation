@@ -2,9 +2,9 @@
 #include <stdio.h>
 #include <string.h>
 #include <iostream>
-#include "ae.h"
-#include "chromosome.h"
-#include "random.h"
+#include "AlgoGenetic.h"
+#include "Chromosome.h"
+#include "Random.h"
 #include "instancesFormations/instance-80formations_5.h"
 
 using namespace std;
@@ -55,15 +55,15 @@ int main(int argc, char **argv)
 	cout << "Il y a " << NBR_CENTRES_FORMATION << " centres de formations " << endl << endl;
 
 	// initialise l'algorithme �volutionniste
-	Ae algo(taille_population, taux_croisement, taux_mutation, taille_chromosome);
-	// arguments du constructeur de l'objet Ae
+	AlgoGenetic algo(taille_population, taux_croisement, taux_mutation, taille_chromosome);
+	// arguments du constructeur de l'objet AlgoGenetic
 	//    1. taille de la population (entier > 0)
 	//    2. taux de croisement (0 <= reel <= 1)
 	//    3. taux de mutation (0 <= reel <= 1)
 	//    4. nombre de formation (=taille d'un chromosome)
 
 	// lance l'algorithme �volutionniste
-	chromosome *best = algo.optimiser();
+	Chromosome *best = algo.optimiser();
 
 	//affiche la fitness du meilleur individu trouvé
 	cout << "La meilleure solution trouvee est : ";

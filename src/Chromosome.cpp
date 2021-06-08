@@ -1,10 +1,10 @@
 #include <list>
-#include "chromosome.h"
+#include "Chromosome.h"
 
 using namespace std;
 
 // initialisation des param�tres d'un chromosome
-chromosome::chromosome(int tc)
+Chromosome::Chromosome(int tc)
 {
 	//au depart chacune des interface est encore plainement disponible, elle a donc 35h restantes
 
@@ -82,15 +82,15 @@ chromosome::chromosome(int tc)
 	}
 }
 
-// destruction de l'objet 'chromosome'
-chromosome::~chromosome()
+// destruction de l'objet 'Chromosome'
+Chromosome::~Chromosome()
 {
 	delete genes;
 	delete tempsRestantIntervenants;
 }
 
 //vérifie la disponibilité d'une interface pour un creaneau de formation
-bool chromosome::interfaceDispo(int idIntervenant, int idApprenant, int idCours){
+bool Chromosome::interfaceDispo(int idIntervenant, int idApprenant, int idCours){
 
 	bool dispo = true;
 
@@ -134,7 +134,7 @@ bool chromosome::interfaceDispo(int idIntervenant, int idApprenant, int idCours)
 }
 
 //vérifie la validité d'une solution
-bool chromosome::valide(){
+bool Chromosome::valide(){
 
 	bool valide = true;
 
@@ -161,7 +161,7 @@ bool chromosome::valide(){
 }
 
 // �valuation d'une solution : fonction qui calcule la fitness d'une solution
-void chromosome::evaluer()
+void Chromosome::evaluer()
 {
 	//On créer un tableau de list
     list<int> tabList[NBR_INTERFACES];
@@ -325,14 +325,14 @@ void chromosome::evaluer()
 
 
 // copie les genes d'un chromosome. la fitness n'est pas reprise
-void chromosome::copier(chromosome* source)
+void Chromosome::copier(Chromosome* source)
 {
 	for(int i=0; i<taille; i++)
 		genes[i] = source->genes[i];
 }
 
 //mélange aléatoire des valeurs d'un tableau passé en paramètre
-void chromosome::shuffle(int *array, size_t n) {
+void Chromosome::shuffle(int *array, size_t n) {
 	if (n > 1) {
 		size_t i;
 		for (i = 0; i < n - 1; i++)
@@ -346,7 +346,7 @@ void chromosome::shuffle(int *array, size_t n) {
 }
 
 //mélange aléatoire des gènes situés entre deux points du chromosome
-void chromosome::melange_alea_genes() {
+void Chromosome::melange_alea_genes() {
 	//Sélection aléatoire du point de départ
 	int depart = Random::aleatoire(taille);
 	int arrive;
@@ -397,7 +397,7 @@ void chromosome::melange_alea_genes() {
 }
 
 //met à jour le tableau de temps de travail des interface suite à un changement dans les genes
-void chromosome::majTempsTravailInterface(){
+void Chromosome::majTempsTravailInterface(){
 
 	//Au depart chacune des interface est encore plainement disponible, elle a donc 35h restantes
 	for(int i=0; i<NBR_INTERFACES; i++){
@@ -417,7 +417,7 @@ void chromosome::majTempsTravailInterface(){
 }
 
 // affichage des param�tre d'un chromosome
-void chromosome::afficher()
+void Chromosome::afficher()
 {
 	cout << genes[0];
 	for(int i=1;i<taille;i++)
@@ -426,7 +426,7 @@ void chromosome::afficher()
 	cout << " => fitness = " << fitness << endl;
 }
 
-bool chromosome::identique(chromosome* chro)
+bool Chromosome::identique(Chromosome* chro)
 {
 	for(int i=1; i<taille; i++)
 		if (chro->genes [i] != this->genes[i])

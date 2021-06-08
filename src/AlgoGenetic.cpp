@@ -1,33 +1,33 @@
-#include "ae.h"
+#include "AlgoGenetic.h"
 #include <math.h>
 #include <time.h>
 
 using namespace std;
 
 // initialisation des paramétres de l'AG et génération de la population initiale
-Ae::Ae(int tp, double tcroisement, double tmutation, int tc)
+AlgoGenetic::AlgoGenetic(int tp, double tcroisement, double tmutation, int tc)
 {
 	taille_pop        = tp;
 	taux_croisement   = tcroisement;
 	taux_mutation     = tmutation;
 	taille_chromosome = tc;
-	pop   = new population(taille_pop, taille_chromosome);
+	pop   = new Population(taille_pop, taille_chromosome);
 }
 
-// destructeur de l'objet Ae
-Ae::~Ae()
+// destructeur de l'objet AlgoGenetic
+AlgoGenetic::~AlgoGenetic()
 {
 	delete pop;
 }
 
 // procédure principale de la recherche
-chromosome* Ae::optimiser()
+Chromosome* AlgoGenetic::optimiser()
 {
 	int amelioration = 0;
-	chromosome *enfant1 = new chromosome(taille_chromosome);
-	chromosome *enfant2 = new chromosome(taille_chromosome);
-	chromosome *pere;
-	chromosome *mere;
+	Chromosome *enfant1 = new Chromosome(taille_chromosome);
+	Chromosome *enfant2 = new Chromosome(taille_chromosome);
+	Chromosome *pere;
+	Chromosome *mere;
 	double best_fitness;
 	// évaluation des individus de la population initiale
 	for(int ind=0; ind<taille_pop; ind++){
@@ -143,7 +143,7 @@ chromosome* Ae::optimiser()
 }
 
 //fonction qui trie dans l'ordre croissant un tableau d'entier d'une taille donnée
-void Ae::sort(int* tab, int size) {
+void AlgoGenetic::sort(int* tab, int size) {
 	for(int i = 0; i < size; i++) {
 		int min = tab[i];
     	int indice = i;
@@ -159,7 +159,7 @@ void Ae::sort(int* tab, int size) {
 }
 
 //fonction qui vérifie si un élément passé en paramètre se situe dans un tableau d'entier également passé en paramètre
-bool Ae::isInArray(int value, int* tab, int size) {
+bool AlgoGenetic::isInArray(int value, int* tab, int size) {
 	bool res = false;
 	for(int i = 0; i < size; i++) {
 		if(tab[i] == value) {
@@ -170,15 +170,15 @@ bool Ae::isInArray(int value, int* tab, int size) {
 }
 
 // double croisement NX de deux chromosomes
-void Ae::croisementDoubleNX(chromosome* parent1, chromosome* parent2,
-												chromosome* enfant1, chromosome* enfant2)
+void AlgoGenetic::croisementDoubleNX(Chromosome* parent1, Chromosome* parent2,
+												Chromosome* enfant1, Chromosome* enfant2)
 {
 	//Sélection aléatoire du nombre de points de croisements qu'il y aura lors du premier croisement
 	int premierCroisementN = Random::aleatoire_min_max(1, 5);
 
 	//enfants intermédiaires issues du premier croisement et qui seront les parents du deuxième croisement
-	chromosome* enfant_intermediaire1 = new chromosome(parent1->taille);
-	chromosome* enfant_intermediaire2 = new chromosome(parent1->taille);
+	Chromosome* enfant_intermediaire1 = new Chromosome(parent1->taille);
+	Chromosome* enfant_intermediaire2 = new Chromosome(parent1->taille);
 
 	//On effectue un premier croisement NX avec N la valeur fournie par premierCroisementN
 	croisementNX(parent1, parent2, enfant1, enfant2, premierCroisementN);
@@ -201,8 +201,8 @@ void Ae::croisementDoubleNX(chromosome* parent1, chromosome* parent2,
 }
 
 // opérateur de croisement NX de deux chromosomes
-void Ae::croisementNX(chromosome* parent1, chromosome* parent2,
-												chromosome* enfant1, chromosome* enfant2, int croisementN)
+void AlgoGenetic::croisementNX(Chromosome* parent1, Chromosome* parent2,
+												Chromosome* enfant1, Chromosome* enfant2, int croisementN)
 {
 	int nb_genes = parent1->taille;
 	bool regular_add = true;

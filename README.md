@@ -15,12 +15,15 @@ Pour compiler le projet dans un environnement linux, dans un terminal, placez vo
 
     ./build
 
-Une fois le projet complilé, il vous suffit de le lancer à l'aide du script `run` comme suit :
+Une fois le projet complilé, il vous suffit de le lancer à l'aide du script `run`. Il est possible d'executer ce sript de deux manière différentes. Premièrement simplement sans arguments, les paramètres auront alors leurs valeurs par défaut (une taille de population égale au nombre de créneaux de formation, un taux de croisement de 0.5 et un taux de mutation de 0.01). La commande à executée dans ce cas de figure est la suivante :
 
     ./run
 
+L'autre possibilité est de passer 3 arguments, les paramètres prendrons alors ces valeurs. Le script s'execute alors comme suit :
 
-En cas de problèmes de droits faites les commandes :
+    ./run <taille_population> <taux_croisement> <taux_mutation>
+
+En cas de problèmes de droits avec l'un des scripts faites les commandes :
 
     chmod u+x ./build
     chmod u+x ./run
@@ -30,9 +33,13 @@ Pour compiler le projet dans un environnement Windows, dans l'invite de commande
 
     buildWindows.bat
 
-Une fois le projet complilé, il vous suffit de le lancer à l'aide du script `runWindows` comme suit :
+Une fois le projet complilé, il vous suffit de le lancer à l'aide du script `runWindows`. Il est possible d'executer ce sript de deux manière différentes. Premièrement simplement sans arguments, les paramètres auront alors leurs valeurs par défaut (une taille de population égale au nombre de créneaux de formation, un taux de croisement de 0.5 et un taux de mutation de 0.01). La commande à executée dans ce cas de figure est la suivante :
 
     runWindows.bat
+
+L'autre possibilité est de passer 3 arguments, les paramètres prendrons alors ces valeurs. Le script s'execute alors comme suit :
+
+    runWindows.bat <taille_population> <taux_croisement> <taux_mutation>
 
 En cas de problèmes de droits, ralancer l'invite de commande en l'executant en tant qu'administrateur.
 
